@@ -594,6 +594,13 @@
         .sim-metrics { margin-top: 12px; }
         .sim-alert { margin: 10px 0 0; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, #f5b94a 16%, var(--card)); border: 1px solid color-mix(in srgb, #f5b94a 50%, var(--line)); color: var(--ink); font-size: var(--fs-sm); }
         .sim-disc { margin-top: 12px; }
+        .tbl-wrap { overflow-x: auto; }
+        .sim-cmp-h { font-size: 15px; margin: 16px 2px 8px; }
+        .sim-cmp { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+        .sim-cmp th { text-align: left; font-size: 12px; color: var(--ink-3); font-weight: 650; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+        .sim-cmp td { padding: 9px 8px; border-bottom: 1px solid var(--line); }
+        .sim-cmp tr[data-cmp] { cursor: pointer; } .sim-cmp tr.cur td { background: var(--accent-soft); } .sim-cmp tr.caution td:first-child { color: #c98a12; }
+        .sim-cmp td.neg { color: #d4485a; font-weight: 700; }
         .sim-src { margin-top: 10px; font-size: var(--fs-sm); color: var(--ink-2); } .sim-src summary { cursor: pointer; font-weight: 650; } .sim-src li { margin: 6px 0; } .sim-src a { color: var(--accent); }
         .sim-cta { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin: 12px 0 2px; }
         .dim-box { margin: 14px 0 4px; padding: 10px 12px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
@@ -3726,7 +3733,7 @@
             sim_q_ifu: 'height from the manufacturer', sim_q_range: 'approximate height (interpolated from the published range)', sim_q_sec: 'height from a secondary source (to be verified)', sim_q_schem: 'height not verified: schematic drawing, not to scale',
             sim_disc: 'Orientative geometric simulation built from nominal dimensions. It does not model the discs/leaflets or pivots of the mechanical valve, tissue, calcium, frame recoil or the actual expansion, and does not replace CT-based planning or the manufacturers\' IFU.',
             sim_none: 'There is no sizing table for this model, so no device can be proposed automatically. Choose one manually.',
-            sim_src: 'Device dimension sources', sim_flow: 'outflow', sim_in: 'inflow', sim_transp: 'Transparent housing', sim_nominal: 'nominal', sim_play: 'Replay implantation', sim_lg_mech: 'Mechanical valve (already implanted)', sim_lg_thv: 'TAVI (valve-in-valve)',
+            sim_src: 'Device dimension sources', sim_flow: 'outflow', sim_in: 'inflow', sim_transp: 'Transparent housing', sim_nominal: 'nominal', sim_play: 'Replay implantation', sim_lg_mech: 'Mechanical valve (already implanted)', sim_lg_thv: 'TAVI (valve-in-valve)', sim_cmp: 'Compare the sizing-table candidates', sim_cmp_dev: 'Device', sim_cmp_note: 'Tap a row to simulate it.', sim_trans: 'The narrowing at the edges of the ring is drawn as a gradual transition of schematic length.',
             sim_layers: 'Layers (tap: visible → faded → hidden)', ly_mech: 'Mechanical housing', ly_cuff: 'Sewing ring', ly_frame: 'TAVI frame', ly_leaf: 'TAVI leaflets', ly_skirt: 'TAVI skirt', ly_dims: 'Dimensions', ly_labels: 'Numbers', ly_on: 'visible', ly_dim: 'faded', ly_off: 'hidden', ly_reset: 'Show all'
         });
         Object.assign(translations.es, {
@@ -3739,7 +3746,7 @@
             sim_q_ifu: 'altura del fabricante', sim_q_range: 'altura aproximada (interpolada del rango publicado)', sim_q_sec: 'altura de fuente secundaria (pendiente de verificar)', sim_q_schem: 'altura no verificada: dibujo esquemático, no a escala',
             sim_disc: 'Simulación geométrica orientativa a partir de dimensiones nominales. No modela los discos/valvas ni los pivotes de la válvula mecánica, el tejido, el calcio, el retroceso del stent ni la expansión real, y no sustituye a la planificación por TC ni a las IFU de los fabricantes.',
             sim_none: 'Este modelo no tiene tabla de tamaños, por lo que no se puede proponer un dispositivo automáticamente. Elige uno manualmente.',
-            sim_src: 'Fuentes de las dimensiones de los dispositivos', sim_flow: 'salida', sim_in: 'entrada', sim_transp: 'Anillo transparente', sim_nominal: 'nominal', sim_play: 'Repetir implante', sim_lg_mech: 'Prótesis mecánica (ya implantada)', sim_lg_thv: 'TAVI (valve-in-valve)',
+            sim_src: 'Fuentes de las dimensiones de los dispositivos', sim_flow: 'salida', sim_in: 'entrada', sim_transp: 'Anillo transparente', sim_nominal: 'nominal', sim_play: 'Repetir implante', sim_lg_mech: 'Prótesis mecánica (ya implantada)', sim_lg_thv: 'TAVI (valve-in-valve)', sim_cmp: 'Comparativa de candidatos de la tabla de tamaños', sim_cmp_dev: 'Dispositivo', sim_cmp_note: 'Toca una fila para simularla.', sim_trans: 'El estrechamiento en los bordes del anillo se dibuja como una transición progresiva de longitud esquemática.',
             sim_layers: 'Capas (toca: visible → atenuada → oculta)', ly_mech: 'Cuerpo mecánico', ly_cuff: 'Anillo de sutura', ly_frame: 'Armazón TAVI', ly_leaf: 'Valvas TAVI', ly_skirt: 'Faldón TAVI', ly_dims: 'Cotas', ly_labels: 'Números', ly_on: 'visible', ly_dim: 'atenuada', ly_off: 'oculta', ly_reset: 'Mostrar todo'
         });
 
@@ -3818,8 +3825,9 @@
                 <button type="button" class="btn ghost sim-play" id="sim-play">▶ ${esc(t('sim_play'))}</button>
                 <div class="metrics sim-metrics" id="sim-metrics"></div>
                 <div id="sim-warn"></div>
+                <div id="sim-cmp"></div>
                 <p class="note"><b>${esc(t('tavi_' + dev))} ${esc(tsz)}</b>: ${esc(t('sim_q_' + thv.q))}.</p>
-                <p class="note sim-disc">⚠ ${esc(t('sim_disc'))}</p>
+                <p class="note sim-disc">⚠ ${esc(t('sim_disc'))} ${esc(t('sim_trans'))}</p>
                 <details class="sim-src"><summary>${esc(t('sim_src'))}</summary><ul>${Object.keys(THV_SRC).map(k => `<li><b>${esc(t('tavi_' + k))}</b>: <a href="${esc(THV_SRC[k].url)}" target="_blank" rel="noopener">${esc(L(THV_SRC[k]))}</a></li>`).join('')}<li>${esc(t('tavi_source'))} ${esc(L(TAVI_SOURCE))}</li></ul></details>
             </div>`;
             const OFF = thv.h + m.H + 4; // la TAVI llega desde la salida (aorta), plegada, y se expande dentro de la mecánica
@@ -3863,6 +3871,15 @@
                 $('[data-lbl]').addEventListener('click', () => { ss.labels = !ss.labels; lyUI(); frame(1); });
                 $('[data-lyreset]').addEventListener('click', () => { Object.keys(ss.layers).forEach(k => ss.layers[k] = 2); ss.labels = true; lyUI(); frame(1); });
             };
+            const cmpRows = cand.list.slice(); if (!cmpRows.some(o => o.dev === dev && o.size === tsz)) cmpRows.push({ dev, size: tsz, caution: false, manual: true });
+            if (cmpRows.length > 1) {
+                cmpRows.sort((a, b) => parseFloat(a.size) - parseFloat(b.size) || a.dev.localeCompare(b.dev));
+                $('#sim-cmp').innerHTML = `<h3 class="sim-cmp-h">${esc(t('sim_cmp'))}</h3><div class="tbl-wrap"><table class="sim-cmp"><thead><tr><th>${esc(t('sim_cmp_dev'))}</th><th>${esc(t('sim_m_nom'))}</th><th>${esc(t('sim_m_over'))}</th><th>${esc(t('sim_m_comp'))}</th></tr></thead><tbody>${cmpRows.map(o => {
+                    const D = parseFloat(o.size), ov = (D / m.id - 1) * 100, cp = Math.max(0, D - m.id) / D * 100, cur = o.dev === dev && o.size === tsz, best = cand.best && cand.best.dev === o.dev && cand.best.size === o.size;
+                    return `<tr data-cmp="${o.dev}/${o.size}" class="${cur ? 'cur' : ''}${o.caution ? ' caution' : ''}"><td><b>${esc(t('tavi_' + o.dev))} ${esc(o.size)}</b>${best ? ' ★' : ''}${o.caution ? ' ⚠' : ''}</td><td>${D.toFixed(1)}</td><td class="${ov < 0 ? 'neg' : ''}">${ov >= 0 ? '+' : ''}${ov.toFixed(0)} %</td><td>${cp.toFixed(0)} %</td></tr>`;
+                }).join('')}</tbody></table></div><p class="note">${esc(t('sim_cmp_note'))}</p>`;
+                $$('[data-cmp]').forEach(tr => tr.addEventListener('click', () => go(`${base}/${tr.dataset.cmp}`, true)));
+            }
             lyUI();
             draw();
             if (!matchMedia('(prefers-reduced-motion: reduce)').matches) play();
@@ -3874,6 +3891,17 @@
             $$('[data-sv]', view).forEach(b => b.addEventListener('click', () => { ss.view = b.dataset.sv; $$('[data-sv]', view).forEach(x => x.setAttribute('aria-pressed', String(x === b))); draw(); }));
             if (!parts[6]) history.replaceState(null, '', `${base}/${dev}/${tsz}`);
             window.scrollTo(0, 0);
+        }
+
+        // Radio efectivo del armazón: limitado al DI dentro del anillo rígido y con una transición progresiva por fuera
+        // (longitud de transición esquemática: 1,5 mm balón-expandible, 3 mm autoexpandible)
+        function simEff(thv, m, depth, inset) {
+            const lim = m.id / 2 - (inset || 0), Lt = thv.type === 'bev' ? 1.5 : 3;
+            return zt => {
+                const r = thv.rAt(zt); if (r <= lim) return r;
+                const z = zt - depth, d = z < 0 ? -z : z > m.H ? z - m.H : 0;
+                return r - (r - lim) * Math.exp(-d / Lt);
+            };
         }
 
         // ---------- Capas (visible / atenuada / oculta) ----------
@@ -3916,7 +3944,7 @@
             const s = Math.min(112 / Math.max(m.cod / 2, rMax), 260 / (zMax - zMin));
             const cx = W / 2, Hpx = (zMax - zMin) * s, hh = padT + Hpx + padB;
             const Y = z => padT + (zMax - z) * s;
-            const eff = zt => { const z = zt - depth, r = thv.rAt(zt); return (z >= 0 && z <= m.H) ? Math.min(r, m.id / 2) : r; };
+            const eff = simEff(thv, m, depth, 0);
             const op = k => simOp(ss, k, 'side'), LY = Object.fromEntries(SIM_LAYERS.map(x => [x.k, x]));
             const badges = [];
             let o = `<svg viewBox="0 0 ${W} ${hh}" class="sim-svg" role="img" aria-label="${esc(t('sim_v_side'))}"><defs>
@@ -4029,7 +4057,7 @@
                 addQ([P(rc, a0, cm + (c1 - cm) * .4), P(rc, a1, cm + (c1 - cm) * .4), P(rc, a1, cm - (cm - c0) * .4), P(rc, a0, cm - (cm - c0) * .4)], [170, 56, 52], 'cuff');
                 addQ([P(rc, a0, cm - (cm - c0) * .4), P(rc, a1, cm - (cm - c0) * .4), P(ro, a1, c0), P(ro, a0, c0)], [140, 42, 40], 'cuff');
             }
-            const eff = zt => { const z = zt - depth, r = thv.rAt(zt); return (z >= -0.01 && z <= m.H + 0.01) ? Math.min(r, ri - 0.15) : r; };
+            const eff = simEff(thv, m, depth, 0.15);
             const rows = thv.type === 'bev' ? 5 : Math.max(8, Math.round(thv.h / 5)), cols = thv.type === 'bev' ? 12 : 15;
             for (let k = 0; k < rows; k++) {
                 const z0 = thv.h * k / rows, z1 = thv.h * (k + 1) / rows, zm = (z0 + z1) / 2;
