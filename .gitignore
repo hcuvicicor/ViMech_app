@@ -1,0 +1,9 @@
+# Carpetas locales que no se publican en GitHub
+_archivo/
+_no_subir/
+# Vídeos de más de 100 MB (límite de GitHub)
+*.mov
+
+# Archivos de prueba / sobrantes
+vimech_test_*
+assets/sjm_bileaflet/
