@@ -3216,7 +3216,12 @@
             applyStaticText();
             window.addEventListener('hashchange', () => route());
             route();
-            if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+            if ('serviceWorker' in navigator && location.protocol === 'https:') {
+                // Actualización automática: si hay una versión nueva, se instala y la app se recarga sola una vez.
+                const had = !!navigator.serviceWorker.controller; let reloaded = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => { if (had && !reloaded) { reloaded = true; location.reload(); } });
+                navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(r => { r.update(); document.addEventListener('visibilitychange', () => { if (!document.hidden) r.update(); }); }).catch(() => {});
+            }
         }
         document.addEventListener('DOMContentLoaded', initApp);
 
