@@ -386,10 +386,10 @@
         .size-card .sc-h h3 { font-size: var(--fs-lg); }
         .size-card .sc-h span { color: var(--ink-3); font-size: var(--fs-sm); }
         .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-        .metric { border-radius: 14px; padding: 10px 12px; background: var(--card); border: 1px solid var(--line); min-width: 0; }
+        .metric { border-radius: 14px; padding: 10px 12px; background: var(--card); border: 1px solid var(--line); min-width: 0; overflow: hidden; container-type: inline-size; }
         .metric .k { font-size: var(--fs-xs); color: var(--ink-3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .metric .v { font-size: var(--fs-num); font-weight: 750; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
-        .metric .u { font-size: 13px; font-weight: 600; margin-left: 2px; opacity: .75; }
+        .metric .v { font-size: min(var(--fs-num), 31cqi); font-weight: 750; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .metric .u { display: block; font-size: 12px; font-weight: 600; margin: 2px 0 0; opacity: .75; white-space: nowrap; }
         .metric.off { border-color: var(--off-line); background: var(--off-bg); } .metric.off .v { color: var(--off); }
         .metric.own { border-color: var(--own-line); background: var(--own-bg); } .metric.own .v { color: var(--own); }
         .metric.lit { border-color: var(--lit-line); background: var(--lit-bg); } .metric.lit .v { color: var(--lit); }
@@ -502,8 +502,11 @@
         #lightbox { width: min(1100px, 100vw); max-width: 100vw; background: #05080f; color: #fff; }
         #lightbox .dlg-head { background: #05080f; border-color: #1b2436; }
         #lightbox .x { background: #111a2b; border-color: #2a3550; color: #fff; }
-        .lb-stage { position: relative; display: grid; place-items: center; min-height: 50dvh; touch-action: pan-y; }
-        .lb-stage img { max-height: 78dvh; object-fit: contain; margin: 0 auto; background: radial-gradient(circle at 50% 40%, #fff, #e6ebf3 75%); border-radius: 12px; }
+        .lb-stage { position: relative; display: grid; place-items: center; min-height: 50dvh; touch-action: none; overflow: hidden; user-select: none; -webkit-user-select: none; }
+        .lb-stage.zoomed { cursor: grab; }
+        .lb-cred { text-align: center; font-size: 11px; color: #7f90ad; padding: 8px 12px 12px; min-height: 1em; }
+        .lb-hint { text-align: center; font-size: 12px; color: #9fb0cc; padding: 6px 0 10px; }
+        .lb-stage img { max-height: 78dvh; max-width: 100%; transform-origin: 50% 50%; will-change: transform; -webkit-user-drag: none; object-fit: contain; margin: 0 auto; background: radial-gradient(circle at 50% 40%, #fff, #e6ebf3 75%); border-radius: 12px; }
         .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 999px; border: 1px solid #2a3550; background: rgba(17,26,43,.8); color: #fff; display: grid; place-items: center; }
         .lb-nav.prev { left: 8px; } .lb-nav.next { right: 8px; }
         .lb-count { font-size: 13px; color: #9fb0cc; }
@@ -619,11 +622,13 @@
     <!-- VISOR DE IMÁGENES -->
     <dialog id="lightbox" aria-labelledby="lb-title">
         <div class="dlg-head"><h2 id="lb-title" style="font-size:15px;font-weight:600"></h2><span class="lb-count num" id="lb-count"></span><button class="x" data-close type="button">✕</button></div>
+        <div class="lb-hint" id="lb-hint" data-i18n="lb_hint"></div>
         <div class="lb-stage" id="lb-stage">
             <img id="lb-img" alt="">
             <button class="lb-nav prev" id="lb-prev" type="button" aria-label="‹"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
             <button class="lb-nav next" id="lb-next" type="button" aria-label="›"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
         </div>
+        <div class="lb-cred" id="lb-cred"></div>
     </dialog>
 
     <script>
@@ -765,7 +770,7 @@
             official_pct: p => `${p}% official`, all_official: 'All values from official source', all_own: 'All values from own data', mixed: 'Official + own data',
             tavi_own_tag: 'Own data', specs_tag_off: 'Official', specs_tag_mix: 'Mixed',
             gallery_design: 'Images & design', gallery_fluoro: 'Fluoroscopy', gallery_pos: 'Positioning',
-            not_published: 'not published', of: 'of',
+            not_published: 'not published', of: 'of', lb_hint: 'Pinch or double-tap to zoom · swipe to change photo',
             source_own_title: 'Own data from previous versions of the app.',
             prov_lit: 'Unofficial data (literature, distributors)', lit_tag: 'Unofficial',
             hero_title: 'Bileaflet Mechanical Valves at Aortic location',
@@ -794,7 +799,7 @@
             official_pct: p => `${p}% oficial`, all_official: 'Todos los valores de fuente oficial', all_own: 'Todos los valores son datos propios', mixed: 'Oficial + datos propios',
             tavi_own_tag: 'Datos propios', specs_tag_off: 'Oficial', specs_tag_mix: 'Mixto',
             gallery_design: 'Imágenes y diseño', gallery_fluoro: 'Fluoroscopia', gallery_pos: 'Posicionamiento',
-            not_published: 'no publicado', of: 'de',
+            not_published: 'no publicado', of: 'de', lb_hint: 'Pellizca o toca dos veces para ampliar · desliza para cambiar de foto',
             source_own_title: 'Datos propios de versiones anteriores de la app.',
             prov_lit: 'Datos no oficiales (literatura, distribuidores)', lit_tag: 'No oficial',
             hero_title: 'Bileaflet Mechanical Valves at Aortic location',
@@ -997,28 +1002,28 @@
         const K_ONX = ['size', 'model', 'tad', 'id', 'cod', 'hc', 'ho', 'oa'];
         const K_OLD = ['size', 'tad', 'id', 'oho', 'goa'];
         const IMG = {
-            regent: [{ src: 'assets/hd/sjm/regent_23_smithsonian.webp', cap: { en: 'SJM Regent 23 mm (demo) — Smithsonian NMAH, CC0', es: 'SJM Regent 23 mm (demo) — Smithsonian NMAH, CC0' } }],
-            mastersHP: [{ src: 'assets/hd/sjm/masters_hp_23_smithsonian.webp', cap: { en: 'SJM Masters HP 23 mm aortic (demo) — Smithsonian NMAH, CC0', es: 'SJM Masters HP 23 mm aórtica (demo) — Smithsonian NMAH, CC0' } }],
-            mastersAo: [{ src: 'assets/hd/sjm/masters_aortic_27_smithsonian.webp', cap: { en: 'SJM standard aortic 27 mm, polyester cuff (demo) — Smithsonian NMAH, CC0', es: 'SJM aórtica estándar 27 mm, manguito de poliéster (demo) — Smithsonian NMAH, CC0' } }],
-            mastersMi: [{ src: 'assets/hd/sjm/masters_mitral_smithsonian.webp', cap: { en: 'SJM standard mitral (demo) — Smithsonian NMAH, CC0', es: 'SJM mitral estándar (demo) — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/sjm/masters_mitral_31_smithsonian.webp', cap: { en: 'SJM 31 mm mitral (demo) — Smithsonian NMAH, CC0', es: 'SJM mitral 31 mm (demo) — Smithsonian NMAH, CC0' } }],
-            cmStd: [{ src: 'assets/hd/carbomedics/cm_aortic_smithsonian_1.webp', cap: { en: 'CarboMedics valve (1996) — Smithsonian NMAH, CC0', es: 'Válvula CarboMedics (1996) — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/carbomedics/cm_aortic_smithsonian_2.webp', cap: { en: 'CarboMedics valve, oblique view — Smithsonian NMAH, CC0', es: 'Válvula CarboMedics, vista oblicua — Smithsonian NMAH, CC0' } }],
-            cmTop: [{ src: 'assets/hd/carbomedics/tophat_corcym.webp', cap: { en: 'Carbomedics Top Hat — © Corcym', es: 'Carbomedics Top Hat — © Corcym' } }, { src: 'assets/hd/carbomedics/tophat_insitu_corcym.webp', cap: { en: 'Top Hat: totally supra-annular placement — © Corcym', es: 'Top Hat: implante totalmente supraanular — © Corcym' } }],
-            cmRed: [{ src: 'assets/hd/carbomedics/reduced_insitu_corcym.webp', cap: { en: 'Reduced sewing ring, placement in situ — © Corcym', es: 'Anillo de sutura reducido, posición in situ — © Corcym' } }],
-            opStdAo: [{ src: 'assets/hd/medtronic-ats/openpivot_standard_medtronic.webp', cap: { en: 'Open Pivot Standard — © Medtronic', es: 'Open Pivot Estándar — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/openpivot_medtronic.webp', cap: { en: 'Open Pivot mechanical valve — © Medtronic', es: 'Válvula mecánica Open Pivot — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/specs_standard_aortic.webp', cap: { en: 'Standard aortic: A = orifice ID, B = tissue annulus — © Medtronic', es: 'Aórtica estándar: A = DI del orificio, B = anillo tisular — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/openpivot_axis_medtronic.webp', cap: { en: 'Open-pivot axis of suspension — © Medtronic', es: 'Eje de suspensión de pivote abierto — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/ats_openpivot_smithsonian.webp', cap: { en: 'ATS Open Pivot (1992) — Smithsonian NMAH, CC0', es: 'ATS Open Pivot (1992) — Smithsonian NMAH, CC0' } }],
-            opApAo: [{ src: 'assets/hd/medtronic-ats/openpivot_ap360_medtronic.webp', cap: { en: 'Open Pivot AP360 — © Medtronic', es: 'Open Pivot AP360 — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/specs_ap360_aortic.webp', cap: { en: 'AP360 aortic (supra-annular): A = orifice ID, B = tissue annulus — © Medtronic', es: 'AP360 aórtica (supraanular): A = DI del orificio, B = anillo tisular — © Medtronic' } }],
-            opStdMi: [{ src: 'assets/hd/medtronic-ats/openpivot_standard_medtronic.webp', cap: { en: 'Open Pivot Standard — © Medtronic', es: 'Open Pivot Estándar — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/specs_standard_mitral.webp', cap: { en: 'Standard mitral: A = orifice ID, B = tissue annulus — © Medtronic', es: 'Mitral estándar: A = DI del orificio, B = anillo tisular — © Medtronic' } }],
-            opApMi: [{ src: 'assets/hd/medtronic-ats/openpivot_ap360_medtronic.webp', cap: { en: 'Open Pivot AP360 — © Medtronic', es: 'Open Pivot AP360 — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/specs_ap360_mitral.webp', cap: { en: 'AP360 mitral: A = orifice ID, B = tissue annulus — © Medtronic', es: 'AP360 mitral: A = DI del orificio, B = anillo tisular — © Medtronic' } }],
-            onxAo: [{ src: 'assets/hd/onx/onx_aortic_artivion.webp', cap: { en: 'On-X aortic valve — © Artivion', es: 'Válvula aórtica On-X — © Artivion' } }, { src: 'assets/hd/onx/onx_aortic_artivion_2.webp', cap: { en: 'On-X aortic valve, side view — © Artivion', es: 'Válvula aórtica On-X, vista lateral — © Artivion' } }, { src: 'assets/hd/onx/onx_housing_artivion.webp', cap: { en: 'On-X housing with flared inlet and pivot guards — © Artivion', es: 'Anillo On-X con entrada acampanada y protectores de pivote — © Artivion' } }],
-            onxEarly: [{ src: 'assets/hd/onx/onx_early_smithsonian_1.webp', cap: { en: 'Early On-X (Bokros, CarboMedics era) — Smithsonian NMAH, CC0', es: 'On-X temprana (Bokros, época CarboMedics) — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/onx/onx_early_smithsonian_2.webp', cap: { en: 'Early On-X, oblique view — Smithsonian NMAH, CC0', es: 'On-X temprana, vista oblicua — Smithsonian NMAH, CC0' } }],
-            onxMi: [{ src: 'assets/hd/onx/onx_mitral_artivion.webp', cap: { en: 'On-X mitral valve — © Artivion', es: 'Válvula mitral On-X — © Artivion' } }, { src: 'assets/hd/onx/onx_mitral_design_artivion.webp', cap: { en: 'On-X mitral design features — © Artivion', es: 'Características de diseño On-X mitral — © Artivion' } }],
-            bicFam: [{ src: 'assets/hd/bicarbon/bicarbon_corcym.webp', cap: { en: 'Bicarbon — © Corcym', es: 'Bicarbon — © Corcym' } }, { src: 'assets/hd/bicarbon/bicarbon_corcym_2.webp', cap: { en: 'Bicarbon family — © Corcym', es: 'Familia Bicarbon — © Corcym' } }, { src: 'assets/hd/bicarbon/bicarbon_detail_corcym.webp', cap: { en: 'Bicarbon leaflets and pivots — © Corcym', es: 'Discos y pivotes Bicarbon — © Corcym' } }],
-            bicSlim: [{ src: 'assets/hd/bicarbon/slimline_insitu_corcym.webp', cap: { en: 'Slimline and placement in situ — © Corcym', es: 'Slimline y posición in situ — © Corcym' } }],
-            bicFit: [{ src: 'assets/hd/bicarbon/fitline_insitu_corcym.webp', cap: { en: 'Fitline and placement in situ — © Corcym', es: 'Fitline y posición in situ — © Corcym' } }],
-            bicFitMi: [{ src: 'assets/hd/bicarbon/fitline_mitral_insitu_corcym.webp', cap: { en: 'Fitline mitral and placement in situ — © Corcym', es: 'Fitline mitral y posición in situ — © Corcym' } }],
-            jyros: [{ src: 'assets/hd/jyros/jyros_smithsonian_1.webp', cap: { en: 'Jyros bileaflet valve — Smithsonian NMAH, CC0', es: 'Válvula bidisco Jyros — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/jyros/jyros_smithsonian_2.webp', cap: { en: 'Jyros, leaflets closed — Smithsonian NMAH, CC0', es: 'Jyros, discos cerrados — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/jyros/jyros_smithsonian_3.webp', cap: { en: 'Jyros, oblique view — Smithsonian NMAH, CC0', es: 'Jyros, vista oblicua — Smithsonian NMAH, CC0' } }],
-            meril: [{ src: 'assets/hd/meril/miltonia_meril.webp', cap: { en: 'Miltonia — © Meril', es: 'Miltonia — © Meril' } }, { src: 'assets/hd/meril/miltonia_family_meril.webp', cap: { en: 'Miltonia sizes — © Meril (brochure)', es: 'Tallas Miltonia — © Meril (folleto)' } }, { src: 'assets/hd/meril/miltonia_render_meril.webp', cap: { en: 'Miltonia: titanium stiffening ring and pivots — © Meril (brochure)', es: 'Miltonia: anillo rigidizador de titanio y pivotes — © Meril (folleto)' } }]
+            regent: [{ src: 'assets/hd/sjm/sjm-regent-aortic-23mm-photo.webp', cap: { en: 'SJM Regent 23 mm (demo) — Smithsonian NMAH, CC0', es: 'SJM Regent 23 mm (demo) — Smithsonian NMAH, CC0' } }],
+            mastersHP: [{ src: 'assets/hd/sjm/sjm-masters-hp-aortic-23mm-photo.webp', cap: { en: 'SJM Masters HP 23 mm aortic (demo) — Smithsonian NMAH, CC0', es: 'SJM Masters HP 23 mm aórtica (demo) — Smithsonian NMAH, CC0' } }],
+            mastersAo: [{ src: 'assets/hd/sjm/sjm-masters-aortic-27mm-photo.webp', cap: { en: 'SJM standard aortic 27 mm, polyester cuff (demo) — Smithsonian NMAH, CC0', es: 'SJM aórtica estándar 27 mm, manguito de poliéster (demo) — Smithsonian NMAH, CC0' } }],
+            mastersMi: [{ src: 'assets/hd/sjm/sjm-masters-mitral-photo.webp', cap: { en: 'SJM standard mitral (demo) — Smithsonian NMAH, CC0', es: 'SJM mitral estándar (demo) — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/sjm/sjm-masters-mitral-31mm-photo.webp', cap: { en: 'SJM 31 mm mitral (demo) — Smithsonian NMAH, CC0', es: 'SJM mitral 31 mm (demo) — Smithsonian NMAH, CC0' } }],
+            cmStd: [{ src: 'assets/hd/carbomedics/carbomedics-aortic-1996-photo.webp', cap: { en: 'CarboMedics valve (1996) — Smithsonian NMAH, CC0', es: 'Válvula CarboMedics (1996) — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/carbomedics/carbomedics-aortic-1996-oblique-photo.webp', cap: { en: 'CarboMedics valve, oblique view — Smithsonian NMAH, CC0', es: 'Válvula CarboMedics, vista oblicua — Smithsonian NMAH, CC0' } }],
+            cmTop: [{ src: 'assets/hd/carbomedics/carbomedics-tophat-aortic-photo.webp', cap: { en: 'Carbomedics Top Hat — © Corcym', es: 'Carbomedics Top Hat — © Corcym' } }, { src: 'assets/hd/carbomedics/carbomedics-tophat-aortic-insitu.webp', cap: { en: 'Top Hat: totally supra-annular placement — © Corcym', es: 'Top Hat: implante totalmente supraanular — © Corcym' } }],
+            cmRed: [{ src: 'assets/hd/carbomedics/carbomedics-reduced-aortic-insitu.webp', cap: { en: 'Reduced sewing ring, placement in situ — © Corcym', es: 'Anillo de sutura reducido, posición in situ — © Corcym' } }],
+            opStdAo: [{ src: 'assets/hd/medtronic-ats/medtronic-openpivot-standard-aortic-photo.webp', cap: { en: 'Open Pivot Standard — © Medtronic', es: 'Open Pivot Estándar — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-openpivot-photo.webp', cap: { en: 'Open Pivot mechanical valve — © Medtronic', es: 'Válvula mecánica Open Pivot — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-openpivot-standard-aortic-dimensions.webp', cap: { en: 'Standard aortic: A = orifice ID, B = tissue annulus — © Medtronic', es: 'Aórtica estándar: A = DI del orificio, B = anillo tisular — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-openpivot-axis-schematic.webp', cap: { en: 'Open-pivot axis of suspension — © Medtronic', es: 'Eje de suspensión de pivote abierto — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-ats-openpivot-1992-photo.webp', cap: { en: 'ATS Open Pivot (1992) — Smithsonian NMAH, CC0', es: 'ATS Open Pivot (1992) — Smithsonian NMAH, CC0' } }],
+            opApAo: [{ src: 'assets/hd/medtronic-ats/medtronic-openpivot-ap360-aortic-photo.webp', cap: { en: 'Open Pivot AP360 — © Medtronic', es: 'Open Pivot AP360 — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-openpivot-ap360-aortic-dimensions.webp', cap: { en: 'AP360 aortic (supra-annular): A = orifice ID, B = tissue annulus — © Medtronic', es: 'AP360 aórtica (supraanular): A = DI del orificio, B = anillo tisular — © Medtronic' } }],
+            opStdMi: [{ src: 'assets/hd/medtronic-ats/medtronic-openpivot-standard-aortic-photo.webp', cap: { en: 'Open Pivot Standard — © Medtronic', es: 'Open Pivot Estándar — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-openpivot-standard-mitral-dimensions.webp', cap: { en: 'Standard mitral: A = orifice ID, B = tissue annulus — © Medtronic', es: 'Mitral estándar: A = DI del orificio, B = anillo tisular — © Medtronic' } }],
+            opApMi: [{ src: 'assets/hd/medtronic-ats/medtronic-openpivot-ap360-aortic-photo.webp', cap: { en: 'Open Pivot AP360 — © Medtronic', es: 'Open Pivot AP360 — © Medtronic' } }, { src: 'assets/hd/medtronic-ats/medtronic-openpivot-ap360-mitral-dimensions.webp', cap: { en: 'AP360 mitral: A = orifice ID, B = tissue annulus — © Medtronic', es: 'AP360 mitral: A = DI del orificio, B = anillo tisular — © Medtronic' } }],
+            onxAo: [{ src: 'assets/hd/onx/onx-aortic-photo.webp', cap: { en: 'On-X aortic valve — © Artivion', es: 'Válvula aórtica On-X — © Artivion' } }, { src: 'assets/hd/onx/onx-aortic-side-photo.webp', cap: { en: 'On-X aortic valve, side view — © Artivion', es: 'Válvula aórtica On-X, vista lateral — © Artivion' } }, { src: 'assets/hd/onx/onx-housing-inlet-photo.webp', cap: { en: 'On-X housing with flared inlet and pivot guards — © Artivion', es: 'Anillo On-X con entrada acampanada y protectores de pivote — © Artivion' } }],
+            onxEarly: [{ src: 'assets/hd/onx/onx-early-standard-photo.webp', cap: { en: 'Early On-X (Bokros, CarboMedics era) — Smithsonian NMAH, CC0', es: 'On-X temprana (Bokros, época CarboMedics) — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/onx/onx-early-standard-oblique-photo.webp', cap: { en: 'Early On-X, oblique view — Smithsonian NMAH, CC0', es: 'On-X temprana, vista oblicua — Smithsonian NMAH, CC0' } }],
+            onxMi: [{ src: 'assets/hd/onx/onx-mitral-photo.webp', cap: { en: 'On-X mitral valve — © Artivion', es: 'Válvula mitral On-X — © Artivion' } }, { src: 'assets/hd/onx/onx-mitral-design-schematic.webp', cap: { en: 'On-X mitral design features — © Artivion', es: 'Características de diseño On-X mitral — © Artivion' } }],
+            bicFam: [{ src: 'assets/hd/bicarbon/bicarbon-aortic-photo.webp', cap: { en: 'Bicarbon — © Corcym', es: 'Bicarbon — © Corcym' } }, { src: 'assets/hd/bicarbon/bicarbon-family-photo.webp', cap: { en: 'Bicarbon family — © Corcym', es: 'Familia Bicarbon — © Corcym' } }, { src: 'assets/hd/bicarbon/bicarbon-leaflets-pivots-detail.webp', cap: { en: 'Bicarbon leaflets and pivots — © Corcym', es: 'Discos y pivotes Bicarbon — © Corcym' } }],
+            bicSlim: [{ src: 'assets/hd/bicarbon/bicarbon-slimline-aortic-insitu.webp', cap: { en: 'Slimline and placement in situ — © Corcym', es: 'Slimline y posición in situ — © Corcym' } }],
+            bicFit: [{ src: 'assets/hd/bicarbon/bicarbon-fitline-aortic-insitu.webp', cap: { en: 'Fitline and placement in situ — © Corcym', es: 'Fitline y posición in situ — © Corcym' } }],
+            bicFitMi: [{ src: 'assets/hd/bicarbon/bicarbon-fitline-mitral-insitu.webp', cap: { en: 'Fitline mitral and placement in situ — © Corcym', es: 'Fitline mitral y posición in situ — © Corcym' } }],
+            jyros: [{ src: 'assets/hd/jyros/jyros-aortic-photo.webp', cap: { en: 'Jyros bileaflet valve — Smithsonian NMAH, CC0', es: 'Válvula bidisco Jyros — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/jyros/jyros-aortic-closed-photo.webp', cap: { en: 'Jyros, leaflets closed — Smithsonian NMAH, CC0', es: 'Jyros, discos cerrados — Smithsonian NMAH, CC0' } }, { src: 'assets/hd/jyros/jyros-aortic-oblique-photo.webp', cap: { en: 'Jyros, oblique view — Smithsonian NMAH, CC0', es: 'Jyros, vista oblicua — Smithsonian NMAH, CC0' } }],
+            meril: [{ src: 'assets/hd/meril/meril-miltonia-aortic-photo.webp', cap: { en: 'Miltonia — © Meril', es: 'Miltonia — © Meril' } }, { src: 'assets/hd/meril/meril-miltonia-sizes-photo.webp', cap: { en: 'Miltonia sizes — © Meril (brochure)', es: 'Tallas Miltonia — © Meril (folleto)' } }, { src: 'assets/hd/meril/meril-miltonia-ring-pivots-render.webp', cap: { en: 'Miltonia: titanium stiffening ring and pivots — © Meril (brochure)', es: 'Miltonia: anillo rigidizador de titanio y pivotes — © Meril (folleto)' } }]
         };
-        const MERIL_IMG = [...IMG.meril, 'assets/Meril Miltonia/main.png'];
+        const MERIL_IMG = [...IMG.meril, 'assets/Meril Miltonia/meril-miltonia-aortic-sizes-photo.png'];
         const K_MER = ['size', 'model', 'tad', 'cod', 'id', 'goa', 'oho', 'ih'];
         const K_ATS_H = ['size', 'model', 'tad', 'id', 'goa', 'ohp', 'iph', 'oph'];
         const UNVERIFIED_HEIGHTS = { en: 'Inflow/outflow profile heights: values from the previous version of the app; no official source located.', es: 'Alturas de perfil de entrada/salida: valores de la versión anterior de la app; sin fuente oficial localizada.' };
@@ -1030,13 +1035,13 @@
                     aortic: [
                         {
                             subtypeName: { en: 'SJM Regent™ — Standard Cuff', es: 'SJM Regent™ — Manguito estándar' },
-                            images: ['assets/SJM Regent/SJM_regent_standardcuff.png', ...IMG.regent, 'assets/SJM Regent/master_series.png'],
+                            images: ['assets/SJM Regent/sjm-regent-standardcuff-aortic-photo.png', ...IMG.regent, 'assets/SJM Regent/sjm-masters-annulus-diameter-schematic.png'],
                             source: [SRC.abbottRegentWeb, SRC.abbottRegentFlex], verified: true,
                             notes: { en: 'Internal diameter (19–27 mm) taken from the Regent FlexCuff ordering sheet (same carbon housing). Not published for size 17.', es: 'Diámetro interno (19–27 mm) tomado de la hoja de pedido Regent FlexCuff (mismo anillo de carbono). No publicado para la talla 17.' },
                             fluoroscopyDesc: FLUORO.regent,
-                            fluoroscopyImages: ['assets/SJM Regent/SJM_Imagen2.jpg'],
+                            fluoroscopyImages: ['assets/SJM Regent/sjm-regent-aortic-fluoro.jpg'],
                             positioning: positioning_SJM_CM,
-                            positioningImages: [{ src: 'assets/guide/fig4_profundidad_implante.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/BEV_sjm_video2.mp4', { src: 'assets/SJM Regent/myvalv_sjm.mp4', cap: { en: 'Video 1: Myval implantation in a St Jude mechanical valve', es: 'Vídeo 1: implante de Myval en una válvula mecánica St Jude' } }],
+                            positioningImages: [{ src: 'assets/guide/implant-depth-bev-sev-schematic.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/sjm-aortic-bev-positioning-video.mp4', { src: 'assets/SJM Regent/sjm-aortic-myval-implant-video.mp4', cap: { en: 'Video 1: Myval implantation in a St Jude mechanical valve', es: 'Vídeo 1: implante de Myval en una válvula mecánica St Jude' } }],
                             specs: rows(K_SJM, [
                                 [17, '17AGN-751', 17, null, 1.9, 6.1, 11.6, '24.7'],
                                 [19, '19AGN-751', 19, 17.8, 2.4, 6.1, 11.6, '24.7'],
@@ -1049,13 +1054,13 @@
                         },
                         {
                             subtypeName: { en: 'SJM Regent™ — FlexCuff', es: 'SJM Regent™ — FlexCuff' },
-                            images: ['assets/SJM Regent/SJM_regent_flexcuff.png', ...IMG.regent, 'assets/SJM Regent/master_series.png'],
+                            images: ['assets/SJM Regent/sjm-regent-flexcuff-aortic-photo.png', ...IMG.regent, 'assets/SJM Regent/sjm-masters-annulus-diameter-schematic.png'],
                             source: [SRC.abbottRegentWeb, SRC.abbottRegentFlex], verified: true,
                             notes: { en: 'Internal diameter not published for size 17.', es: 'Diámetro interno no publicado para la talla 17.' },
                             fluoroscopyDesc: FLUORO.regent,
-                            fluoroscopyImages: ['assets/SJM Regent/SJM_Imagen2.jpg'],
+                            fluoroscopyImages: ['assets/SJM Regent/sjm-regent-aortic-fluoro.jpg'],
                             positioning: positioning_SJM_CM,
-                            positioningImages: [{ src: 'assets/guide/fig4_profundidad_implante.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/BEV_sjm_video2.mp4', { src: 'assets/SJM Regent/myvalv_sjm.mp4', cap: { en: 'Video 1: Myval implantation in a St Jude mechanical valve', es: 'Vídeo 1: implante de Myval en una válvula mecánica St Jude' } }],
+                            positioningImages: [{ src: 'assets/guide/implant-depth-bev-sev-schematic.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/sjm-aortic-bev-positioning-video.mp4', { src: 'assets/SJM Regent/sjm-aortic-myval-implant-video.mp4', cap: { en: 'Video 1: Myval implantation in a St Jude mechanical valve', es: 'Vídeo 1: implante de Myval en una válvula mecánica St Jude' } }],
                             specs: rows(K_SJM, [
                                 [17, '17AGFN-756', 17, null, 1.9, 6.1, 11.6, '24.7'],
                                 [19, '19AGFN-756', 19, 17.8, 2.4, 6.1, 11.6, '27.0'],
@@ -1068,14 +1073,14 @@
                         },
                         {
                             subtypeName: { en: 'SJM Masters™ — HP Series', es: 'SJM Masters™ — Serie HP' },
-                            images: [...IMG.mastersHP, 'assets/SJM Regent/SJM_masters_hp_series.png', 'assets/SJM Regent/SJM_masters_hp_series2.png'],
+                            images: [...IMG.mastersHP, 'assets/SJM Regent/sjm-masters-hp-aortic-photo.png', 'assets/SJM Regent/sjm-masters-hp-profile.png'],
                             source: [SRC.abbottMastersIFU], verified: true,
                             provKeys: { id: 'lit' }, litSource: [SRC.litChambers],
                             notes: { en: 'Internal diameter is not published by Abbott: values measured by Chambers et al. 2003 on the expanded-cuff HP valve (same carbon housing as the standard cuff); size 17 not measured. Sewing ring OD: standard / expanded cuff (AHPJ-505 / AEHPJ-505).', es: 'Abbott no publica el diámetro interno: valores medidos por Chambers et al. 2003 en la HP de manguito expandido (mismo anillo de carbono que el manguito estándar); la talla 17 no se midió. Diámetro del anillo de sutura: manguito estándar / expandido (AHPJ-505 / AEHPJ-505).' },
                             fluoroscopyDesc: FLUORO.masters,
-                            fluoroscopyImages: ['assets/SJM Regent/sjm_video1.mp4'],
+                            fluoroscopyImages: ['assets/SJM Regent/sjm-masters-aortic-fluoro-video.mp4'],
                             positioning: positioning_SJM_CM,
-                            positioningImages: [{ src: 'assets/guide/fig4_profundidad_implante.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/BEV_sjm_video2.mp4', 'assets/SJM Regent/SEV_sjm_video1.mp4', 'assets/SJM Regent/SEV_sjm_video2.mp4'],
+                            positioningImages: [{ src: 'assets/guide/implant-depth-bev-sev-schematic.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/sjm-aortic-bev-positioning-video.mp4', 'assets/SJM Regent/sjm-aortic-sev-positioning-video-1.mp4', 'assets/SJM Regent/sjm-aortic-sev-positioning-video-2.mp4'],
                             specs: rows(K_SJM, [
                                 [17, '17AHPJ-505', 17, null, 1.6, 4.6, 9.8, '22.0/22.5'],
                                 [19, '19AHPJ-505', 19, 16.6, 2.1, 5.2, 10.6, '24.0/24.0'],
@@ -1088,14 +1093,14 @@
                         },
                         {
                             subtypeName: { en: 'SJM Masters™ — Polyester Cuff', es: 'SJM Masters™ — Manguito de poliéster' },
-                            images: [...IMG.mastersAo, 'assets/SJM Regent/SJM_master_standardcuff.png', 'assets/SJM Regent/SJM_masters_expandedcuff.png'],
+                            images: [...IMG.mastersAo, 'assets/SJM Regent/sjm-masters-standardcuff-aortic-photo.png', 'assets/SJM Regent/sjm-masters-expandedcuff-aortic-photo.png'],
                             source: [SRC.abbottMastersIFU], verified: true,
                             provKeys: { id: 'lit' }, litSource: [SRC.litChambers],
                             notes: { en: 'Internal diameter is not published by Abbott: values measured by Chambers et al. 2003 on the St Jude standard valve (sizes 19–27; 29 and 31 not measured). Sewing ring OD: standard / expanded cuff (AJ-501 / AECJ-502).', es: 'Abbott no publica el diámetro interno: valores medidos por Chambers et al. 2003 en la St Jude estándar (tallas 19–27; la 29 y la 31 no se midieron). Diámetro del anillo de sutura: manguito estándar / expandido (AJ-501 / AECJ-502).' },
                             fluoroscopyDesc: FLUORO.masters,
-                            fluoroscopyImages: ['assets/SJM Regent/sjm_video1.mp4'],
+                            fluoroscopyImages: ['assets/SJM Regent/sjm-masters-aortic-fluoro-video.mp4'],
                             positioning: positioning_SJM_CM,
-                            positioningImages: [{ src: 'assets/guide/fig4_profundidad_implante.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/BEV_sjm_video2.mp4', 'assets/SJM Regent/SEV_sjm_video1.mp4'],
+                            positioningImages: [{ src: 'assets/guide/implant-depth-bev-sev-schematic.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/sjm-aortic-bev-positioning-video.mp4', 'assets/SJM Regent/sjm-aortic-sev-positioning-video-1.mp4'],
                             specs: rows(K_SJM, [
                                 [19, '19AJ-501', 19, 14.8, 1.6, 3.5, 9.8, '22.5/23.0'],
                                 [21, '21AJ-501', 21, 16.6, 2.1, 3.9, 10.6, '24.5/24.5'],
@@ -1109,14 +1114,14 @@
                         },
                         {
                             subtypeName: { en: 'SJM Masters™ — PTFE Cuff', es: 'SJM Masters™ — Manguito de PTFE' },
-                            images: ['assets/SJM Regent/SJM_master_standardcuff.png', ...IMG.mastersAo],
+                            images: ['assets/SJM Regent/sjm-masters-standardcuff-aortic-photo.png', ...IMG.mastersAo],
                             source: [SRC.abbottMastersIFU], verified: true,
                             provKeys: { id: 'lit' }, litSource: [SRC.litChambers],
                             notes: { en: 'Internal diameter is not published by Abbott: values measured by Chambers et al. 2003 on the St Jude standard valve (same carbon housing; sizes 19–27).', es: 'Abbott no publica el diámetro interno: valores medidos por Chambers et al. 2003 en la St Jude estándar (mismo anillo de carbono; tallas 19–27).' },
                             fluoroscopyDesc: FLUORO.masters,
-                            fluoroscopyImages: ['assets/SJM Regent/sjm_video1.mp4'],
+                            fluoroscopyImages: ['assets/SJM Regent/sjm-masters-aortic-fluoro-video.mp4'],
                             positioning: positioning_SJM_CM,
-                            positioningImages: [{ src: 'assets/guide/fig4_profundidad_implante.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/BEV_sjm_video2.mp4', 'assets/SJM Regent/SEV_sjm_video1.mp4'],
+                            positioningImages: [{ src: 'assets/guide/implant-depth-bev-sev-schematic.png', cap: { en: 'Implantation depth: A BEV, B SEV in SJM', es: 'Profundidad de implante: A BEV, B SEV en SJM' } }, 'assets/SJM Regent/sjm-aortic-bev-positioning-video.mp4', 'assets/SJM Regent/sjm-aortic-sev-positioning-video-1.mp4'],
                             specs: rows(K_SJM, [
                                 [19, '19ATJ-503', 19, 14.8, 1.6, 3.5, 9.8, '24.0'],
                                 [21, '21ATJ-503', 21, 16.6, 2.1, 3.9, 10.6, '26.0'],
@@ -1132,7 +1137,7 @@
                     mitral: [
                         {
                             subtypeName: { en: 'SJM Masters™ — Polyester Cuff (mitral)', es: 'SJM Masters™ — Manguito de poliéster (mitral)' },
-                            images: [...IMG.mastersMi, 'assets/SJM Regent/SJM_master_standardcuff.png'],
+                            images: [...IMG.mastersMi, 'assets/SJM Regent/sjm-masters-standardcuff-aortic-photo.png'],
                             source: [SRC.abbottMastersIFU], verified: true,
                             notes: { en: 'Sewing ring OD: standard / expanded cuff (MJ-501 / MECJ-502). Internal diameter not published.', es: 'Diámetro del anillo de sutura: manguito estándar / expandido (MJ-501 / MECJ-502). Diámetro interno no publicado.' },
                             specs: rows(K_SJM, [
@@ -1148,7 +1153,7 @@
                         },
                         {
                             subtypeName: { en: 'SJM Masters™ — HP Series (mitral)', es: 'SJM Masters™ — Serie HP (mitral)' },
-                            images: [...IMG.mastersMi, 'assets/SJM Regent/SJM_masters_hp_series2.png'],
+                            images: [...IMG.mastersMi, 'assets/SJM Regent/sjm-masters-hp-profile.png'],
                             source: [SRC.abbottMastersIFU], verified: true,
                             notes: { en: 'Internal diameter not published.', es: 'Diámetro interno no publicado.' },
                             specs: rows(K_SJM, [
@@ -1162,7 +1167,7 @@
                         },
                         {
                             subtypeName: { en: 'SJM Masters™ — PTFE Cuff (mitral)', es: 'SJM Masters™ — Manguito de PTFE (mitral)' },
-                            images: [...IMG.mastersMi, 'assets/SJM Regent/SJM_master_standardcuff.png'],
+                            images: [...IMG.mastersMi, 'assets/SJM Regent/sjm-masters-standardcuff-aortic-photo.png'],
                             source: [SRC.abbottMastersIFU], verified: true,
                             notes: { en: 'Internal diameter not published.', es: 'Diámetro interno no publicado.' },
                             specs: rows(K_SJM, [
@@ -1185,12 +1190,12 @@
                     aortic: [
                         {
                             subtypeName: { en: 'Standard Aortic', es: 'Aórtica Estándar' },
-                            images: [...IMG.cmStd, 'assets/CarboMedics/Carbomedics_standard_main.png', 'assets/CarboMedics/Imagen4_standard_aortic.png', 'assets/CarboMedics/Imagen4_standard_pediatric_aortic.png'],
+                            images: [...IMG.cmStd, 'assets/CarboMedics/carbomedics-standard-aortic-photo.png', 'assets/CarboMedics/carbomedics-standard-aortic-catalog.png', 'assets/CarboMedics/carbomedics-standard-pediatric-aortic-catalog.png'],
                             source: [SRC.corcymCM], verified: true,
                             fluoroscopyDesc: FLUORO.carbomedics,
-                            fluoroscopyImages: ['assets/CarboMedics/imagen4_Multimedia1.mp4', 'assets/CarboMedics/imagen4_Multimedia2.mp4', 'assets/CarboMedics/imagen4_Multimedia3.mp4'],
+                            fluoroscopyImages: ['assets/CarboMedics/carbomedics-aortic-fluoro-video-1.mp4', 'assets/CarboMedics/carbomedics-aortic-fluoro-video-2.mp4', 'assets/CarboMedics/carbomedics-aortic-fluoro-video-3.mp4'],
                             positioning: positioning_SJM_CM,
-                            positioningImages: ['assets/CarboMedics/imagen5_Multimedia1_rec.mp4'],
+                            positioningImages: ['assets/CarboMedics/carbomedics-aortic-tavi-positioning-video.mp4'],
                             specs: rows(K_CM, [
                                 [19, 'R5-019', 18.8, 14.7, 6.2, 1.59, 1.0],
                                 [21, 'R5-021', 20.8, 16.7, 6.6, 2.07, 1.5],
@@ -1203,7 +1208,7 @@
                         },
                         {
                             subtypeName: { en: 'Reduced Aortic', es: 'Aórtica Reducida' },
-                            images: [...IMG.cmRed, 'assets/CarboMedics/Carbomedics_reduced_main.png', 'assets/CarboMedics/Carbomedics_reduced_figure.png', 'assets/CarboMedics/Imagen4_reduced_aortic.png'],
+                            images: [...IMG.cmRed, 'assets/CarboMedics/carbomedics-reduced-aortic-photo.png', 'assets/CarboMedics/carbomedics-reduced-aortic-insitu.png', 'assets/CarboMedics/carbomedics-reduced-aortic-catalog.png'],
                             source: [SRC.corcymCM], verified: true,
                             fluoroscopyDesc: FLUORO.carbomedics,
                             positioning: positioning_SJM_CM,
@@ -1220,7 +1225,7 @@
                         },
                         {
                             subtypeName: { en: 'Top Hat Aortic (totally supra-annular)', es: 'Aórtica Top Hat (totalmente supraanular)' },
-                            images: [...IMG.cmTop, 'assets/CarboMedics/Carbomedics_tophat_main.png', 'assets/CarboMedics/Carbomedics_tophat_figure.png', 'assets/CarboMedics/Imagen4_topHat_aortic.png'],
+                            images: [...IMG.cmTop, 'assets/CarboMedics/carbomedics-tophat-aortic-photo.png', 'assets/CarboMedics/carbomedics-tophat-aortic-insitu.png', 'assets/CarboMedics/carbomedics-tophat-aortic-catalog.png'],
                             source: [SRC.corcymCM], verified: true,
                             notes: { en: 'Totally supra-annular design: the tissue annulus diameter equals the internal diameter (ID = TAD).', es: 'Diseño totalmente supraanular: el diámetro del anillo tisular es igual al diámetro interno (DI = TAD).' },
                             fluoroscopyDesc: FLUORO.carbomedics,
@@ -1236,7 +1241,7 @@
                         },
                         {
                             subtypeName: { en: 'Orbis Aortic', es: 'Aórtica Orbis' },
-                            images: ['assets/CarboMedics/Carbomedics_orbis_main.png', 'assets/CarboMedics/Imagen4_orbis_aortic.png'],
+                            images: ['assets/CarboMedics/carbomedics-orbis-aortic-photo.png', 'assets/CarboMedics/carbomedics-orbis-aortic-catalog.png'],
                             source: [SRC.corcymCM], verified: true,
                             fluoroscopyDesc: FLUORO.carbomedics,
                             positioning: positioning_SJM_CM,
@@ -1255,7 +1260,7 @@
                     mitral: [
                         {
                             subtypeName: { en: 'Standard Mitral', es: 'Mitral Estándar' },
-                            images: ['assets/CarboMedics/Carbomedics_standard_mitral_main.png', 'assets/CarboMedics/Carbomedics_standard_mitral_figure.png'],
+                            images: ['assets/CarboMedics/carbomedics-standard-mitral-photo.png', 'assets/CarboMedics/carbomedics-standard-mitral-insitu.png'],
                             source: [SRC.corcymCM], verified: true,
                             fluoroscopyDesc: FLUORO.carbomedics,
                             specs: rows(K_CMM, [
@@ -1272,7 +1277,7 @@
                         },
                         {
                             subtypeName: { en: 'Optiform Mitral', es: 'Mitral Optiform' },
-                            images: ['assets/CarboMedics/Carbomedics_optiform_mitral_main.png', 'assets/CarboMedics/Carbomedics_optiform_mitral_figure.png'],
+                            images: ['assets/CarboMedics/carbomedics-optiform-mitral-photo.png', 'assets/CarboMedics/carbomedics-optiform-mitral-insitu.png'],
                             source: [SRC.corcymCM], verified: true,
                             fluoroscopyDesc: FLUORO.carbomedics,
                             specs: rows(K_CMM, [
@@ -1286,7 +1291,7 @@
                         },
                         {
                             subtypeName: { en: 'Orbis Mitral', es: 'Mitral Orbis' },
-                            images: ['assets/CarboMedics/Carbomedics_orbis_mitral_main.png'],
+                            images: ['assets/CarboMedics/carbomedics-orbis-mitral-photo.png'],
                             source: [SRC.corcymCM], verified: true,
                             fluoroscopyDesc: FLUORO.carbomedics,
                             specs: rows(K_CMM, [
@@ -1308,11 +1313,11 @@
                     aortic: [
                         {
                             subtypeName: { en: 'Open Pivot™ Standard Aortic (intra-annular)', es: 'Open Pivot™ Aórtica Estándar (intraanular)' },
-                            images: [...IMG.opStdAo, 'assets/ats_openpivot/Imagen6_openpivot_standard.png', 'assets/ats_openpivot/ats-design.png', 'assets/ats_openpivot/ats_1992.png'],
+                            images: [...IMG.opStdAo, 'assets/ats_openpivot/medtronic-openpivot-standard-photo.png', 'assets/ats_openpivot/medtronic-openpivot-dimensions-schematic.png', 'assets/ats_openpivot/medtronic-ats-1992-photo.png'],
                             source: [SRC.medtronicWeb, SRC.atsTable1, SRC.atsGuide], verified: true,
                             notes: { en: 'Tissue annulus diameter from the current Medtronic page (19.2 mm for size 19); the 2006 ATS guide and the ATS IFU list 19.5 mm (outside diameter). Profile heights and orifice area from ATS IFU Table 1 (sizes 21–29).', es: 'Diámetro del anillo tisular según la web actual de Medtronic (19,2 mm para la talla 19); la guía ATS de 2006 y las IFU de ATS indican 19,5 mm (diámetro exterior). Alturas de perfil y área del orificio según la Tabla 1 de las IFU de ATS (tallas 21–29).' },
                             fluoroscopyDesc: FLUORO.ats,
-                            fluoroscopyImages: [{ src: 'assets/ats_openpivot/ats-fluoro.png', cap: 'ATS 27 mm — LAO23 CAUD6' }, 'assets/ats_openpivot/ats-fluoro2.png', 'assets/ats_openpivot/imagen6_Multimedia1.mp4', 'assets/ats_openpivot/imagen6_Multimedia2.mp4'],
+                            fluoroscopyImages: [{ src: 'assets/ats_openpivot/medtronic-ats-aortic-27mm-fluoro-lao23-caud6.png', cap: 'ATS 27 mm — LAO23 CAUD6' }, 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-85deg.png', 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-video-1.mp4', 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-video-2.mp4'],
                             positioning: positioning_General,
                             specs: rows(K_ATS_H, [
                                 [19, '500FA19', 19.2, 14.8, 1.55, null, null, null],
@@ -1327,11 +1332,11 @@
                         },
                         {
                             subtypeName: { en: 'Open Pivot™ AP / AP360™ Aortic (supra-annular)', es: 'Open Pivot™ AP / AP360™ Aórtica (supraanular)' },
-                            images: [...IMG.opApAo, 'assets/ats_openpivot/Imagen6_openpivot_ap360.png', 'assets/ats_openpivot/ats-design.png', 'assets/ats_openpivot/ats-extra.png'],
+                            images: [...IMG.opApAo, 'assets/ats_openpivot/medtronic-openpivot-ap360-photo.png', 'assets/ats_openpivot/medtronic-openpivot-dimensions-schematic.png', 'assets/ats_openpivot/medtronic-openpivot-ap360-aortic-top.png'],
                             source: [SRC.medtronicWeb, SRC.atsTable1], verified: true,
                             notes: { en: 'Current models 505DA (AP360™); the earlier AP (501DA) shares dimensions. Profile heights from ATS IFU Table 1 (sizes 18–26).', es: 'Modelos actuales 505DA (AP360™); el AP anterior (501DA) comparte dimensiones. Alturas de perfil según la Tabla 1 de las IFU de ATS (tallas 18–26).' },
                             fluoroscopyDesc: FLUORO.ats,
-                            fluoroscopyImages: [{ src: 'assets/ats_openpivot/ats-fluoro.png', cap: 'ATS 27 mm — LAO23 CAUD6' }, 'assets/ats_openpivot/ats-fluoro2.png', 'assets/ats_openpivot/imagen6_Multimedia1.mp4', 'assets/ats_openpivot/imagen6_Multimedia2.mp4'],
+                            fluoroscopyImages: [{ src: 'assets/ats_openpivot/medtronic-ats-aortic-27mm-fluoro-lao23-caud6.png', cap: 'ATS 27 mm — LAO23 CAUD6' }, 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-85deg.png', 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-video-1.mp4', 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-video-2.mp4'],
                             positioning: positioning_General,
                             specs: rows(K_ATS_H, [
                                 [16, '505DA16', 16.2, 14.8, 1.55, null, null, null],
@@ -1348,7 +1353,7 @@
                     mitral: [
                         {
                             subtypeName: { en: 'Open Pivot™ Standard Mitral', es: 'Open Pivot™ Mitral Estándar' },
-                            images: [...IMG.opStdMi, 'assets/ats_openpivot/Imagen6_openpivot_standard.png', 'assets/ats_openpivot/ats-design.png'],
+                            images: [...IMG.opStdMi, 'assets/ats_openpivot/medtronic-openpivot-standard-photo.png', 'assets/ats_openpivot/medtronic-openpivot-dimensions-schematic.png'],
                             source: [SRC.medtronicWeb, SRC.atsTable1], verified: true,
                             fluoroscopyDesc: FLUORO.ats,
                             specs: rows(K_ATS_H, [
@@ -1364,7 +1369,7 @@
                         },
                         {
                             subtypeName: { en: 'Open Pivot™ AP360™ Mitral (supra-annular)', es: 'Open Pivot™ AP360™ Mitral (supraanular)' },
-                            images: [...IMG.opApMi, 'assets/ats_openpivot/Imagen6_openpivot_ap360.png'],
+                            images: [...IMG.opApMi, 'assets/ats_openpivot/medtronic-openpivot-ap360-photo.png'],
                             source: [SRC.medtronicWeb, SRC.atsTable1], verified: true,
                             notes: { en: 'Current models 505DM (AP360™); profile heights for 26 and 28 from ATS IFU Table 1 (models 501DM26/28).', es: 'Modelos actuales 505DM (AP360™); alturas de perfil de 26 y 28 según la Tabla 1 de las IFU de ATS (modelos 501DM26/28).' },
                             fluoroscopyDesc: FLUORO.ats,
@@ -1387,7 +1392,7 @@
                     aortic: [
                         {
                             subtypeName: { en: 'Conform-X® sewing ring', es: 'Anillo de sutura Conform-X®' },
-                            images: ['assets/On-X/on-x_conformx.png', ...IMG.onxAo, 'assets/On-X/on-x aortic.png', 'assets/On-X/Imagen7.png'],
+                            images: ['assets/On-X/onx-conformx-aortic-photo.png', ...IMG.onxAo, 'assets/On-X/onx-aortic-photo.png', 'assets/On-X/onx-aortic-sewing-ring-photo.png'],
                             source: [SRC.onxIFU], verified: true,
                             notes: { en: 'Models ONXACE (extended holder) / ONXAC (standard holder). Size 27/29 shares the 25 mm orifice. Sewing ring position: intra-supra-annular (19–25), intra-annular (27/29).', es: 'Modelos ONXACE (soporte extendido) / ONXAC (soporte estándar). La talla 27/29 comparte el orificio de 25 mm. Posición del anillo de sutura: intra-supraanular (19–25), intraanular (27/29).' },
                             fluoroscopyDesc: FLUORO.onx,
@@ -1403,7 +1408,7 @@
                         },
                         {
                             subtypeName: { en: 'Anatomic sewing ring', es: 'Anillo de sutura Anatomic' },
-                            images: ['assets/On-X/on-x_anatomic.png', ...IMG.onxAo, 'assets/On-X/Imagen7.png'],
+                            images: ['assets/On-X/onx-anatomic-aortic-photo.png', ...IMG.onxAo, 'assets/On-X/onx-aortic-sewing-ring-photo.png'],
                             source: [SRC.onxIFU], verified: true,
                             notes: { en: 'Models ONXANE / ONXAN. Sewing ring position: intra-supra-annular (19–25), intra-annular (27/29).', es: 'Modelos ONXANE / ONXAN. Posición del anillo de sutura: intra-supraanular (19–25), intraanular (27/29).' },
                             fluoroscopyDesc: FLUORO.onx,
@@ -1419,7 +1424,7 @@
                         },
                         {
                             subtypeName: { en: 'Standard sewing ring', es: 'Anillo de sutura estándar' },
-                            images: ['assets/On-X/on-x_standard.png', ...IMG.onxAo, 'assets/On-X/on-x_comparison.png', ...IMG.onxEarly],
+                            images: ['assets/On-X/onx-standard-aortic-photo.png', ...IMG.onxAo, 'assets/On-X/onx-standard-aortic-sizes-photo.png', ...IMG.onxEarly],
                             source: [SRC.onxIFU], verified: true,
                             notes: { en: 'Models ONXAE / ONXA. Sewing ring position: intra-supra-annular (19–25), intra-annular (27/29).', es: 'Modelos ONXAE / ONXA. Posición del anillo de sutura: intra-supraanular (19–25), intraanular (27/29).' },
                             fluoroscopyDesc: FLUORO.onx,
@@ -1437,7 +1442,7 @@
                     mitral: [
                         {
                             subtypeName: { en: 'On-X® Mitral (standard ring)', es: 'On-X® Mitral (anillo estándar)' },
-                            images: [...IMG.onxMi, 'assets/On-X/on-x mitral.png'],
+                            images: [...IMG.onxMi, 'assets/On-X/onx-mitral-photo.png'],
                             source: [SRC.onxIFU], verified: true,
                             notes: { en: 'Sizes ≥25 share the 25 mm orifice. Supra-annular sewing ring.', es: 'Las tallas ≥25 comparten el orificio de 25 mm. Anillo de sutura supraanular.' },
                             fluoroscopyDesc: FLUORO.onx,
@@ -1450,7 +1455,7 @@
                         },
                         {
                             subtypeName: { en: 'On-X® Mitral Conform-X®', es: 'On-X® Mitral Conform-X®' },
-                            images: [...IMG.onxMi, 'assets/On-X/on-x mitral.png'],
+                            images: [...IMG.onxMi, 'assets/On-X/onx-mitral-photo.png'],
                             source: [SRC.onxIFU], verified: true,
                             fluoroscopyDesc: FLUORO.onx,
                             specs: rows(K_ONX, [
@@ -1466,7 +1471,7 @@
                     aortic: [
                         {
                             subtypeName: { en: 'Overline Aortic (supra-annular)', es: 'Aórtica Overline (supraanular)' },
-                            images: [...IMG.bicFam, 'assets/Bicarbon/bicarbon_overline_main.png'],
+                            images: [...IMG.bicFam, 'assets/Bicarbon/bicarbon-overline-aortic-photo.png'],
                             source: [SRC.corcymBicarbon], verified: true,
                             fluoroscopyDesc: FLUORO.bicarbon,
                             positioning: positioning_General,
@@ -1481,7 +1486,7 @@
                         },
                         {
                             subtypeName: { en: 'Slimline Aortic', es: 'Aórtica Slimline' },
-                            images: [...IMG.bicSlim, 'assets/Bicarbon/bicarbon_slimline_main.png', 'assets/Bicarbon/bicarbon_slimline_figure.png'],
+                            images: [...IMG.bicSlim, 'assets/Bicarbon/bicarbon-slimline-aortic-photo.png', 'assets/Bicarbon/bicarbon-slimline-aortic-insitu.png'],
                             source: [SRC.corcymBicarbon], verified: true,
                             fluoroscopyDesc: FLUORO.bicarbon,
                             positioning: positioning_General,
@@ -1497,7 +1502,7 @@
                         },
                         {
                             subtypeName: { en: 'Fitline Aortic', es: 'Aórtica Fitline' },
-                            images: [...IMG.bicFit, 'assets/Bicarbon/bicarbon_fitline_main.png', 'assets/Bicarbon/bicarbon_fitline_figure.png'],
+                            images: [...IMG.bicFit, 'assets/Bicarbon/bicarbon-fitline-aortic-photo.png', 'assets/Bicarbon/bicarbon-fitline-aortic-insitu.png'],
                             source: [SRC.corcymBicarbon], verified: true,
                             fluoroscopyDesc: FLUORO.bicarbon,
                             positioning: positioning_General,
@@ -1516,7 +1521,7 @@
                     mitral: [
                         {
                             subtypeName: { en: 'Fitline Mitral', es: 'Mitral Fitline' },
-                            images: [...IMG.bicFitMi, 'assets/Bicarbon/bicarbon_fitline_mitral_main.png', 'assets/Bicarbon/bicarbon_fitline_mitral_figure.png'],
+                            images: [...IMG.bicFitMi, 'assets/Bicarbon/bicarbon-fitline-mitral-photo.png', 'assets/Bicarbon/bicarbon-fitline-mitral-insitu.png'],
                             source: [SRC.corcymBicarbon], verified: true,
                             fluoroscopyDesc: FLUORO.bicarbon,
                             specs: rows(K_CMM, [
@@ -1552,7 +1557,7 @@
                 id: 'edwards-duromedics', name: 'Edwards Duromedics', manufacturer: 'Edwards Lifesciences',
                 positions: {
                     aortic: [{
-                        subtypeName: { en: 'Standard Aortic', es: 'Aórtica Estándar' }, images: ['assets/Edwards Duromedics/duromedics_main.png'],
+                        subtypeName: { en: 'Standard Aortic', es: 'Aórtica Estándar' }, images: ['assets/Edwards Duromedics/edwards-duromedics-aortic-photo.png'],
                         source: [SRC.none], verified: false,
                         specs: rows(K_OLD, [[19, 19.0, 15.0, 7.0, 1.77], [21, 21.0, 17.0, 7.5, 2.27], [23, 23.0, 19.0, 8.0, 2.84], [25, 25.0, 21.0, 8.5, 3.46], [27, 27.0, 23.0, 9.0, 4.15]]),
                         taviTable: TAVI.duromedics
@@ -1622,35 +1627,761 @@
 
         // Imágenes de fluoroscopia por marca (apartado "Fluoroscopia" y ficha de cada modelo).
         // Para añadir más: guarda la imagen en assets/fluoro/<id-de-marca>/ y añade una línea aquí.
+        // Pie de foto (válvula — modelo — tipo de foto) y crédito de cada imagen. Clave = ruta del archivo.
+        const MEDIA = {
+            "assets/CarboMedics/carbomedics-aortic-fluoro-video-1.mp4": { cap: { en: "CarboMedics aortic — Fluoroscopy video 1", es: "CarboMedics aórtica — Vídeo de fluoroscopia 1" } },
+            "assets/CarboMedics/carbomedics-aortic-fluoro-video-2.mp4": { cap: { en: "CarboMedics aortic — Fluoroscopy video 2", es: "CarboMedics aórtica — Vídeo de fluoroscopia 2" } },
+            "assets/CarboMedics/carbomedics-aortic-fluoro-video-3.mp4": { cap: { en: "CarboMedics aortic — Fluoroscopy video 3", es: "CarboMedics aórtica — Vídeo de fluoroscopia 3" } },
+            "assets/CarboMedics/carbomedics-aortic-tavi-positioning-video.mp4": { cap: { en: "CarboMedics aortic — TAVI positioning video", es: "CarboMedics aórtica — Vídeo de posicionamiento TAVI" } },
+            "assets/ats_openpivot/medtronic-ats-aortic-fluoro-video-1.mp4": { cap: { en: "Medtronic ATS aortic — Fluoroscopy video 1", es: "Medtronic ATS aórtica — Vídeo de fluoroscopia 1" } },
+            "assets/ats_openpivot/medtronic-ats-aortic-fluoro-video-2.mp4": { cap: { en: "Medtronic ATS aortic — Fluoroscopy video 2", es: "Medtronic ATS aórtica — Vídeo de fluoroscopia 2" } },
+            "assets/SJM Regent/sjm-masters-aortic-fluoro-video.mp4": { cap: { en: "SJM Masters aortic — Fluoroscopy video", es: "SJM Masters aórtica — Vídeo de fluoroscopia" } },
+            "assets/SJM Regent/sjm-aortic-bev-positioning-video.mp4": { cap: { en: "SJM aortic — Balloon-expandable valve positioning video", es: "SJM aórtica — Vídeo de posicionamiento de válvula expandible con balón" } },
+            "assets/SJM Regent/sjm-aortic-sev-positioning-video-1.mp4": { cap: { en: "SJM aortic — Self-expanding valve positioning video 1", es: "SJM aórtica — Vídeo 1 de posicionamiento de válvula autoexpandible" } },
+            "assets/SJM Regent/sjm-aortic-sev-positioning-video-2.mp4": { cap: { en: "SJM aortic — Self-expanding valve positioning video 2", es: "SJM aórtica — Vídeo 2 de posicionamiento de válvula autoexpandible" } },
+            "assets/SJM Regent/sjm-aortic-myval-implant-video.mp4": { cap: { en: "SJM aortic — Myval implantation video", es: "SJM aórtica — Vídeo de implante de Myval" } },
+            "assets/Bicarbon/bicarbon-fitline-aortic-insitu.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Fitline aortic — In-situ placement",
+                    "es": "Sorin Bicarbon Fitline aórtica — Posición in situ"
+                }
+            },
+            "assets/Bicarbon/bicarbon-fitline-aortic-photo.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Fitline aortic — Photo",
+                    "es": "Sorin Bicarbon Fitline aórtica — Foto"
+                }
+            },
+            "assets/Bicarbon/bicarbon-fitline-mitral-insitu.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Fitline mitral — In-situ placement",
+                    "es": "Sorin Bicarbon Fitline mitral — Posición in situ"
+                }
+            },
+            "assets/Bicarbon/bicarbon-fitline-mitral-photo.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Fitline mitral — Photo",
+                    "es": "Sorin Bicarbon Fitline mitral — Foto"
+                }
+            },
+            "assets/Bicarbon/bicarbon-overline-aortic-photo.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Overline aortic — Photo",
+                    "es": "Sorin Bicarbon Overline aórtica — Foto"
+                }
+            },
+            "assets/Bicarbon/bicarbon-slimline-aortic-insitu.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Slimline aortic — In-situ placement",
+                    "es": "Sorin Bicarbon Slimline aórtica — Posición in situ"
+                }
+            },
+            "assets/Bicarbon/bicarbon-slimline-aortic-photo.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon Slimline aortic — Photo",
+                    "es": "Sorin Bicarbon Slimline aórtica — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-optiform-mitral-insitu.png": {
+                "cap": {
+                    "en": "CarboMedics Optiform mitral — In-situ placement",
+                    "es": "CarboMedics Optiform mitral — Posición in situ"
+                }
+            },
+            "assets/CarboMedics/carbomedics-optiform-mitral-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Optiform mitral — Photo",
+                    "es": "CarboMedics Optiform mitral — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-orbis-aortic-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Orbis aortic — Photo",
+                    "es": "CarboMedics Orbis aórtica — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-orbis-mitral-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Orbis mitral — Photo",
+                    "es": "CarboMedics Orbis mitral — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-reduced-aortic-insitu.png": {
+                "cap": {
+                    "en": "CarboMedics Reduced aortic — In-situ placement",
+                    "es": "CarboMedics Reduced aórtica — Posición in situ"
+                }
+            },
+            "assets/CarboMedics/carbomedics-reduced-aortic-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Reduced aortic — Photo",
+                    "es": "CarboMedics Reduced aórtica — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-standard-aortic-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Standard aortic — Photo",
+                    "es": "CarboMedics Standard aórtica — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-standard-mitral-insitu.png": {
+                "cap": {
+                    "en": "CarboMedics Standard mitral — In-situ placement",
+                    "es": "CarboMedics Standard mitral — Posición in situ"
+                }
+            },
+            "assets/CarboMedics/carbomedics-standard-mitral-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Standard mitral — Photo",
+                    "es": "CarboMedics Standard mitral — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-tophat-aortic-insitu.png": {
+                "cap": {
+                    "en": "CarboMedics Top Hat aortic — In-situ placement",
+                    "es": "CarboMedics Top Hat aórtica — Posición in situ"
+                }
+            },
+            "assets/CarboMedics/carbomedics-tophat-aortic-photo.png": {
+                "cap": {
+                    "en": "CarboMedics Top Hat aortic — Photo",
+                    "es": "CarboMedics Top Hat aórtica — Foto"
+                }
+            },
+            "assets/CarboMedics/carbomedics-orbis-aortic-catalog.png": {
+                "cap": {
+                    "en": "CarboMedics Orbis aortic — Catalogue photo",
+                    "es": "CarboMedics Orbis aórtica — Foto de catálogo"
+                }
+            },
+            "assets/CarboMedics/carbomedics-reduced-aortic-catalog.png": {
+                "cap": {
+                    "en": "CarboMedics Reduced aortic — Catalogue photo",
+                    "es": "CarboMedics Reduced aórtica — Foto de catálogo"
+                }
+            },
+            "assets/CarboMedics/carbomedics-standard-aortic-catalog.png": {
+                "cap": {
+                    "en": "CarboMedics Standard aortic — Catalogue photo",
+                    "es": "CarboMedics Standard aórtica — Foto de catálogo"
+                }
+            },
+            "assets/CarboMedics/carbomedics-standard-pediatric-aortic-catalog.png": {
+                "cap": {
+                    "en": "CarboMedics Standard Pediatric aortic — Catalogue photo",
+                    "es": "CarboMedics Standard Pediátrica aórtica — Foto de catálogo"
+                }
+            },
+            "assets/CarboMedics/carbomedics-tophat-aortic-catalog.png": {
+                "cap": {
+                    "en": "CarboMedics Top Hat aortic — Catalogue photo",
+                    "es": "CarboMedics Top Hat aórtica — Foto de catálogo"
+                }
+            },
+            "assets/Edwards Duromedics/edwards-duromedics-aortic-photo.png": {
+                "cap": {
+                    "en": "Edwards Duromedics Standard aortic — Photo",
+                    "es": "Edwards Duromedics Estándar aórtica — Foto"
+                }
+            },
+            "assets/Edwards MIRA/edwards-mira-aortic-photo.png": {
+                "cap": {
+                    "en": "Edwards MIRA aortic — Photo",
+                    "es": "Edwards MIRA aórtica — Foto"
+                }
+            },
+            "assets/Gott Daggett/gott-daggett-aortic-photo.png": {
+                "cap": {
+                    "en": "Gott-Daggett aortic — Photo",
+                    "es": "Gott-Daggett aórtica — Foto"
+                }
+            },
+            "assets/Medtronic Advantage/medtronic-advantage-aortic-photo.png": {
+                "cap": {
+                    "en": "Medtronic Advantage aortic — Photo",
+                    "es": "Medtronic Advantage aórtica — Foto"
+                }
+            },
+            "assets/Meril Miltonia/meril-miltonia-aortic-sizes-photo.png": {
+                "cap": {
+                    "en": "Meril Miltonia aortic — Several sizes (photo)",
+                    "es": "Meril Miltonia aórtica — Varias tallas (foto)"
+                }
+            },
+            "assets/On-X/onx-aortic-sewing-ring-photo.png": {
+                "cap": {
+                    "en": "On-X aortic sewing ring — Photo",
+                    "es": "On-X anillo de sutura aórtico — Foto"
+                }
+            },
+            "assets/On-X/onx-aortic-photo.png": {
+                "cap": {
+                    "en": "On-X aortic — Photo",
+                    "es": "On-X aórtica — Foto"
+                }
+            },
+            "assets/On-X/onx-mitral-photo.png": {
+                "cap": {
+                    "en": "On-X mitral — Photo",
+                    "es": "On-X mitral — Foto"
+                }
+            },
+            "assets/On-X/onx-anatomic-aortic-photo.png": {
+                "cap": {
+                    "en": "On-X Anatomic aortic — Photo",
+                    "es": "On-X Anatomic aórtica — Foto"
+                }
+            },
+            "assets/On-X/onx-standard-aortic-sizes-photo.png": {
+                "cap": {
+                    "en": "On-X Standard aortic — Several sizes (photo)",
+                    "es": "On-X Standard aórtica — Varias tallas (foto)"
+                }
+            },
+            "assets/On-X/onx-conformx-aortic-photo.png": {
+                "cap": {
+                    "en": "On-X Conform-X aortic — Photo",
+                    "es": "On-X Conform-X aórtica — Foto"
+                }
+            },
+            "assets/On-X/onx-standard-aortic-photo.png": {
+                "cap": {
+                    "en": "On-X Standard aortic — Photo",
+                    "es": "On-X Standard aórtica — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-regent-aortic-fluoro.jpg": {
+                "cap": {
+                    "en": "SJM Regent aortic — Fluoroscopy",
+                    "es": "SJM Regent aórtica — Fluoroscopia"
+                }
+            },
+            "assets/SJM Regent/sjm-masters-standardcuff-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Masters Standard Cuff — Photo",
+                    "es": "SJM Masters manguito estándar — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-masters-expandedcuff-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Masters Expanded Cuff — Photo",
+                    "es": "SJM Masters manguito expandido — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-masters-flexcuff-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Masters FlexCuff — Photo",
+                    "es": "SJM Masters FlexCuff — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-masters-hp-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Masters HP aortic — Photo",
+                    "es": "SJM Masters HP aórtica — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-masters-hp-profile.png": {
+                "cap": {
+                    "en": "SJM Masters HP aortic and mitral — Profile view",
+                    "es": "SJM Masters HP aórtica y mitral — Vista de perfil"
+                }
+            },
+            "assets/SJM Regent/sjm-pediatric-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Pediatric aortic — Photo",
+                    "es": "SJM Pediátrica aórtica — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-regent-flexcuff-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Regent FlexCuff — Photo",
+                    "es": "SJM Regent FlexCuff — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-regent-standardcuff-aortic-photo.png": {
+                "cap": {
+                    "en": "SJM Regent Standard Cuff — Photo",
+                    "es": "SJM Regent manguito estándar — Foto"
+                }
+            },
+            "assets/SJM Regent/sjm-masters-annulus-diameter-schematic.png": {
+                "cap": {
+                    "en": "SJM Masters — Dimensions diagram (tissue annulus / outer diameter)",
+                    "es": "SJM Masters — Esquema de medidas (anillo tisular / diámetro exterior)"
+                }
+            },
+            "assets/ats_openpivot/medtronic-openpivot-ap360-photo.png": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 — Photo",
+                    "es": "Medtronic Open Pivot AP360 — Foto"
+                }
+            },
+            "assets/ats_openpivot/medtronic-openpivot-standard-photo.png": {
+                "cap": {
+                    "en": "Medtronic Open Pivot Standard — Photo",
+                    "es": "Medtronic Open Pivot Estándar — Foto"
+                }
+            },
+            "assets/ats_openpivot/medtronic-openpivot-dimensions-schematic.png": {
+                "cap": {
+                    "en": "Medtronic Open Pivot Standard / AP — Dimensions diagram (orifice area and heights)",
+                    "es": "Medtronic Open Pivot Estándar / AP — Esquema de medidas (área del orificio y alturas)"
+                }
+            },
+            "assets/ats_openpivot/medtronic-openpivot-ap360-aortic-top.png": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 aortic — Top view (photo)",
+                    "es": "Medtronic Open Pivot AP360 aórtica — Vista superior (foto)"
+                }
+            },
+            "assets/ats_openpivot/medtronic-ats-aortic-27mm-fluoro-lao23-caud6.png": {
+                "cap": {
+                    "en": "Medtronic ATS 27 mm — Fluoroscopy LAO23 CAUD6",
+                    "es": "Medtronic ATS 27 mm — Fluoroscopia LAO23 CAUD6"
+                }
+            },
+            "assets/ats_openpivot/medtronic-ats-aortic-fluoro-85deg.png": {
+                "cap": {
+                    "en": "Medtronic ATS aortic — Fluoroscopy (85° opening)",
+                    "es": "Medtronic ATS aórtica — Fluoroscopia (apertura 85°)"
+                }
+            },
+            "assets/ats_openpivot/medtronic-openpivot-family-photo.png": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 and Standard — Photo",
+                    "es": "Medtronic Open Pivot AP360 y Estándar — Foto"
+                }
+            },
+            "assets/ats_openpivot/medtronic-openpivot-family-photo-2.png": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 and Standard — Photo",
+                    "es": "Medtronic Open Pivot AP360 y Estándar — Foto"
+                }
+            },
+            "assets/ats_openpivot/medtronic-ats-1992-photo.png": {
+                "cap": {
+                    "en": "Medtronic ATS 1992 — Photo",
+                    "es": "Medtronic ATS 1992 — Foto"
+                }
+            },
+            "assets/fluoro/atlas/bileaflet-valves-cine.png": {
+                "cap": {
+                    "en": "Bileaflet valves identification — Cinefluoroscopy",
+                    "es": "Bileaflet valves identificación — Cinefluoroscopia"
+                }
+            },
+            "assets/fluoro/atlas/bileaflet-valves-comparison.png": {
+                "cap": {
+                    "en": "Bileaflet valves SJM, CM, ATS, Sorin, TRI — Photo, profile, cinefluoroscopy and 3D TEE",
+                    "es": "Bileaflet valves SJM, CM, ATS, Sorin, TRI — Foto, perfil, cinefluoroscopia y ETE 3D"
+                }
+            },
+            "assets/fluoro/bicarbon/bicarbon-1990-photo-fluoro.png": {
+                "cap": {
+                    "en": "Sorin Bicarbon 1990 — Photo and fluoroscopy",
+                    "es": "Sorin Bicarbon 1990 — Foto y fluoroscopia"
+                }
+            },
+            "assets/fluoro/carbomedics/carbomedics-fluoro-overview.png": {
+                "cap": {
+                    "en": "CarboMedics — Fluoroscopy (overview)",
+                    "es": "CarboMedics — Fluoroscopia (vista general)"
+                }
+            },
+            "assets/fluoro/carbomedics/carbomedics-1986-profile-fluoro.png": {
+                "cap": {
+                    "en": "CarboMedics 1986 — Photo and fluoroscopy",
+                    "es": "CarboMedics 1986 — Foto y fluoroscopia"
+                }
+            },
+            "assets/fluoro/carbomedics/carbomedics-21mm-fluoro-lao16-cran19.png": {
+                "cap": {
+                    "en": "CarboMedics 21 mm — Fluoroscopy LAO16 CRAN19",
+                    "es": "CarboMedics 21 mm — Fluoroscopia LAO16 CRAN19"
+                }
+            },
+            "assets/fluoro/carbomedics/carbomedics-25mm-fluoro-rao55-caud33.png": {
+                "cap": {
+                    "en": "CarboMedics 25 mm — Fluoroscopy RAO55 CAUD33",
+                    "es": "CarboMedics 25 mm — Fluoroscopia RAO55 CAUD33"
+                }
+            },
+            "assets/fluoro/hp-biplus/hp-biplus-photo-fluoro.png": {
+                "cap": {
+                    "en": "HP-Biplus — Photo and fluoroscopy",
+                    "es": "HP-Biplus — Foto y fluoroscopia"
+                }
+            },
+            "assets/fluoro/jyros/jyros-photo-fluoro.png": {
+                "cap": {
+                    "en": "Jyros — Photo and fluoroscopy",
+                    "es": "Jyros — Foto y fluoroscopia"
+                }
+            },
+            "assets/fluoro/medtronic-advantage/medtronic-advantage-fluoro.png": {
+                "cap": {
+                    "en": "Medtronic Advantage (not in catalogue: no published dimensions) — Fluoroscopy",
+                    "es": "Medtronic Advantage (fuera del catálogo: sin dimensiones publicadas) — Fluoroscopia"
+                }
+            },
+            "assets/fluoro/medtronic-ats/medtronic-ats-fluoro-overview.png": {
+                "cap": {
+                    "en": "Medtronic ATS — Fluoroscopy (overview)",
+                    "es": "Medtronic ATS — Fluoroscopia (vista general)"
+                }
+            },
+            "assets/fluoro/onx/onx-1996-photo-fluoro.png": {
+                "cap": {
+                    "en": "On-X 1996 — Photo and fluoroscopy",
+                    "es": "On-X 1996 — Foto y fluoroscopia"
+                }
+            },
+            "assets/fluoro/sjm/sjm-fluoro-overview.png": {
+                "cap": {
+                    "en": "SJM — Fluoroscopy (overview)",
+                    "es": "SJM — Fluoroscopia (vista general)"
+                }
+            },
+            "assets/fluoro/sjm/sjm-23mm-fluoro-lao17-cran12.png": {
+                "cap": {
+                    "en": "SJM 23 mm — Fluoroscopy LAO17 CRAN12",
+                    "es": "SJM 23 mm — Fluoroscopia LAO17 CRAN12"
+                }
+            },
+            "assets/fluoro/sjm/sjm-23mm-fluoro-lao28-caud9.png": {
+                "cap": {
+                    "en": "SJM 23 mm — Fluoroscopy LAO28 CAUD9",
+                    "es": "SJM 23 mm — Fluoroscopia LAO28 CAUD9"
+                }
+            },
+            "assets/fluoro/sjm/sjm-23mm-fluoro-rao17-caud40.png": {
+                "cap": {
+                    "en": "SJM 23 mm — Fluoroscopy RAO17 CAUD40",
+                    "es": "SJM 23 mm — Fluoroscopia RAO17 CAUD40"
+                }
+            },
+            "assets/fluoro/sjm/sjm-aec-21mm-fluoro-rao27-caud31.png": {
+                "cap": {
+                    "en": "SJM AEC 21 mm — Fluoroscopy RAO27 CAUD31",
+                    "es": "SJM AEC 21 mm — Fluoroscopia RAO27 CAUD31"
+                }
+            },
+            "assets/fluoro/tri/tri-photo-fluoro.png": {
+                "cap": {
+                    "en": "TRI Technologies (not in catalogue: no published dimensions) — Photo and fluoroscopy",
+                    "es": "TRI Technologies (fuera del catálogo: sin dimensiones publicadas) — Foto y fluoroscopia"
+                }
+            },
+            "assets/hd/sjm/sjm-regent-aortic-23mm-photo.webp": {
+                "cap": {
+                    "en": "SJM Regent aortic 23 mm — Photo",
+                    "es": "SJM Regent aórtica 23 mm — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/sjm/sjm-masters-hp-aortic-23mm-photo.webp": {
+                "cap": {
+                    "en": "SJM Masters HP aortic 23 mm — Photo",
+                    "es": "SJM Masters HP aórtica 23 mm — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/sjm/sjm-masters-aortic-27mm-photo.webp": {
+                "cap": {
+                    "en": "SJM Masters aortic 27 mm (polyester cuff) — Photo",
+                    "es": "SJM Masters aórtica 27 mm (manguito de poliéster) — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/sjm/sjm-masters-mitral-photo.webp": {
+                "cap": {
+                    "en": "SJM Masters mitral — Photo",
+                    "es": "SJM Masters mitral — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/sjm/sjm-masters-mitral-31mm-photo.webp": {
+                "cap": {
+                    "en": "SJM Masters mitral 31 mm — Photo",
+                    "es": "SJM Masters mitral 31 mm — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/carbomedics/carbomedics-aortic-1996-photo.webp": {
+                "cap": {
+                    "en": "CarboMedics aortic (1996) — Photo",
+                    "es": "CarboMedics aórtica (1996) — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/carbomedics/carbomedics-aortic-1996-oblique-photo.webp": {
+                "cap": {
+                    "en": "CarboMedics aortic (1996) — Oblique photo",
+                    "es": "CarboMedics aórtica (1996) — Foto oblicua"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/carbomedics/carbomedics-reduced-aortic-insitu.webp": {
+                "cap": {
+                    "en": "CarboMedics Reduced aortic — In-situ placement",
+                    "es": "CarboMedics Reduced aórtica — Posición in situ"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/carbomedics/carbomedics-tophat-aortic-photo.webp": {
+                "cap": {
+                    "en": "CarboMedics Top Hat aortic — Photo",
+                    "es": "CarboMedics Top Hat aórtica — Foto"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/carbomedics/carbomedics-tophat-aortic-insitu.webp": {
+                "cap": {
+                    "en": "CarboMedics Top Hat aortic — In-situ placement",
+                    "es": "CarboMedics Top Hat aórtica — Posición in situ"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/bicarbon/bicarbon-aortic-photo.webp": {
+                "cap": {
+                    "en": "Sorin Bicarbon aortic — Photo",
+                    "es": "Sorin Bicarbon aórtica — Foto"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/bicarbon/bicarbon-family-photo.webp": {
+                "cap": {
+                    "en": "Sorin Bicarbon family — Photo",
+                    "es": "Sorin Bicarbon familia — Foto"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/bicarbon/bicarbon-leaflets-pivots-detail.webp": {
+                "cap": {
+                    "en": "Sorin Bicarbon leaflets and pivots — Detail photo",
+                    "es": "Sorin Bicarbon discos y pivotes — Foto de detalle"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/bicarbon/bicarbon-fitline-aortic-insitu.webp": {
+                "cap": {
+                    "en": "Sorin Bicarbon Fitline aortic — In-situ placement",
+                    "es": "Sorin Bicarbon Fitline aórtica — Posición in situ"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/bicarbon/bicarbon-fitline-mitral-insitu.webp": {
+                "cap": {
+                    "en": "Sorin Bicarbon Fitline mitral — In-situ placement",
+                    "es": "Sorin Bicarbon Fitline mitral — Posición in situ"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/bicarbon/bicarbon-slimline-aortic-insitu.webp": {
+                "cap": {
+                    "en": "Sorin Bicarbon Slimline aortic — In-situ placement",
+                    "es": "Sorin Bicarbon Slimline aórtica — Posición in situ"
+                },
+                "cred": "© Corcym"
+            },
+            "assets/hd/jyros/jyros-aortic-photo.webp": {
+                "cap": {
+                    "en": "Jyros aortic — Photo",
+                    "es": "Jyros aórtica — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/jyros/jyros-aortic-closed-photo.webp": {
+                "cap": {
+                    "en": "Jyros aortic — Photo, leaflets closed",
+                    "es": "Jyros aórtica — Foto, discos cerrados"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/jyros/jyros-aortic-oblique-photo.webp": {
+                "cap": {
+                    "en": "Jyros aortic — Oblique photo",
+                    "es": "Jyros aórtica — Foto oblicua"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/medtronic-ats/medtronic-ats-openpivot-1992-photo.webp": {
+                "cap": {
+                    "en": "Medtronic ATS Open Pivot (1992) — Photo",
+                    "es": "Medtronic ATS Open Pivot (1992) — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-ap360-aortic-photo.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 aortic — Photo",
+                    "es": "Medtronic Open Pivot AP360 aórtica — Foto"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-axis-schematic.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot — Schematic (pivot axis)",
+                    "es": "Medtronic Open Pivot — Esquema (eje de pivote)"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-photo.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot — Photo",
+                    "es": "Medtronic Open Pivot — Foto"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-standard-aortic-photo.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot Standard aortic — Photo",
+                    "es": "Medtronic Open Pivot Estándar aórtica — Foto"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-ap360-aortic-dimensions.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 aortic — Dimensions diagram (A = orifice ID, B = tissue annulus)",
+                    "es": "Medtronic Open Pivot AP360 aórtica — Esquema de medidas (A = DI del orificio, B = anillo tisular)"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-ap360-mitral-dimensions.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot AP360 mitral — Dimensions diagram (A = orifice ID, B = tissue annulus)",
+                    "es": "Medtronic Open Pivot AP360 mitral — Esquema de medidas (A = DI del orificio, B = anillo tisular)"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-standard-aortic-dimensions.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot Standard aortic — Dimensions diagram (A = orifice ID, B = tissue annulus)",
+                    "es": "Medtronic Open Pivot Estándar aórtica — Esquema de medidas (A = DI del orificio, B = anillo tisular)"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/medtronic-ats/medtronic-openpivot-standard-mitral-dimensions.webp": {
+                "cap": {
+                    "en": "Medtronic Open Pivot Standard mitral — Dimensions diagram (A = orifice ID, B = tissue annulus)",
+                    "es": "Medtronic Open Pivot Estándar mitral — Esquema de medidas (A = DI del orificio, B = anillo tisular)"
+                },
+                "cred": "© Medtronic"
+            },
+            "assets/hd/meril/meril-miltonia-aortic-photo.webp": {
+                "cap": {
+                    "en": "Meril Miltonia — Photo",
+                    "es": "Meril Miltonia — Foto"
+                },
+                "cred": "© Meril"
+            },
+            "assets/hd/meril/meril-miltonia-sizes-photo.webp": {
+                "cap": {
+                    "en": "Meril Miltonia — Several sizes (photo)",
+                    "es": "Meril Miltonia — Varias tallas (foto)"
+                },
+                "cred": "© Meril"
+            },
+            "assets/hd/meril/meril-miltonia-ring-pivots-render.webp": {
+                "cap": {
+                    "en": "Meril Miltonia (titanium ring and pivots) — 3D render",
+                    "es": "Meril Miltonia (anillo de titanio y pivotes) — Imagen 3D"
+                },
+                "cred": "© Meril"
+            },
+            "assets/hd/onx/onx-aortic-photo.webp": {
+                "cap": {
+                    "en": "On-X aortic — Photo",
+                    "es": "On-X aórtica — Foto"
+                },
+                "cred": "© Artivion"
+            },
+            "assets/hd/onx/onx-aortic-side-photo.webp": {
+                "cap": {
+                    "en": "On-X aortic — Side photo",
+                    "es": "On-X aórtica — Foto lateral"
+                },
+                "cred": "© Artivion"
+            },
+            "assets/hd/onx/onx-early-standard-photo.webp": {
+                "cap": {
+                    "en": "On-X early model (Bokros) — Photo",
+                    "es": "On-X modelo temprano (Bokros) — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/onx/onx-early-standard-oblique-photo.webp": {
+                "cap": {
+                    "en": "On-X early model (Bokros) — Oblique photo",
+                    "es": "On-X modelo temprano (Bokros) — Foto oblicua"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/onx/onx-housing-inlet-photo.webp": {
+                "cap": {
+                    "en": "On-X housing, flared inlet and pivot guards — Detail photo",
+                    "es": "On-X anillo, entrada acampanada y protectores de pivote — Foto de detalle"
+                },
+                "cred": "© Artivion"
+            },
+            "assets/hd/onx/onx-mitral-photo.webp": {
+                "cap": {
+                    "en": "On-X mitral — Photo",
+                    "es": "On-X mitral — Foto"
+                },
+                "cred": "© Artivion"
+            },
+            "assets/hd/onx/onx-mitral-design-schematic.webp": {
+                "cap": {
+                    "en": "On-X mitral — Schematic (design features)",
+                    "es": "On-X mitral — Esquema (características de diseño)"
+                },
+                "cred": "© Artivion"
+            },
+            "assets/hd/gott-daggett/gott-daggett-photo.webp": {
+                "cap": {
+                    "en": "Gott-Daggett — Photo",
+                    "es": "Gott-Daggett — Foto"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            },
+            "assets/hd/gott-daggett/gott-daggett-oblique-photo.webp": {
+                "cap": {
+                    "en": "Gott-Daggett — Oblique photo",
+                    "es": "Gott-Daggett — Foto oblicua"
+                },
+                "cred": "Smithsonian NMAH (CC0)"
+            }
+        };
         const FLUORO_ATLAS = {
             _general: [
-                { src: 'assets/fluoro/atlas/comparativa_bidisco_SJM_CM_ATS_Sorin_TRI.png', cap: { en: 'Bileaflet valves: photo, profile, cinefluoroscopy and 3D TEE (SJM, CM, ATS, Sorin, TRI)', es: 'Válvulas bidisco: foto, perfil, cinefluoroscopia y ETE 3D (SJM, CM, ATS, Sorin, TRI)' } },
-                { src: 'assets/fluoro/atlas/cinefluoroscopia_bidisco.png', cap: { en: 'Cinefluoroscopic identification of bileaflet valves', es: 'Identificación cinefluoroscópica de válvulas bidisco' } },
-                { src: 'assets/fluoro/medtronic-advantage/advantage_fluoro_A_B.png', cap: { en: 'Medtronic Advantage (not in catalogue: no published dimensions) — A / B', es: 'Medtronic Advantage (fuera del catálogo: sin dimensiones publicadas) — A / B' } },
-                { src: 'assets/fluoro/tri/tri_foto_y_fluoro.png', cap: { en: 'TRI Technologies (not in catalogue: no published dimensions)', es: 'TRI Technologies (fuera del catálogo: sin dimensiones publicadas)' } }
+                { src: 'assets/fluoro/atlas/bileaflet-valves-comparison.png', cap: { en: 'Bileaflet valves: photo, profile, cinefluoroscopy and 3D TEE (SJM, CM, ATS, Sorin, TRI)', es: 'Válvulas bidisco: foto, perfil, cinefluoroscopia y ETE 3D (SJM, CM, ATS, Sorin, TRI)' } },
+                { src: 'assets/fluoro/atlas/bileaflet-valves-cine.png', cap: { en: 'Cinefluoroscopic identification of bileaflet valves', es: 'Identificación cinefluoroscópica de válvulas bidisco' } },
+                { src: 'assets/fluoro/medtronic-advantage/medtronic-advantage-fluoro.png', cap: { en: 'Medtronic Advantage (not in catalogue: no published dimensions) — A / B', es: 'Medtronic Advantage (fuera del catálogo: sin dimensiones publicadas) — A / B' } },
+                { src: 'assets/fluoro/tri/tri-photo-fluoro.png', cap: { en: 'TRI Technologies (not in catalogue: no published dimensions)', es: 'TRI Technologies (fuera del catálogo: sin dimensiones publicadas)' } }
             ],
             sjm: [
-                { src: 'assets/fluoro/sjm/articulo_fig1A_sjm.png', cap: { en: 'St Jude (article, Fig. 1A)', es: 'St Jude (artículo, Fig. 1A)' } },
-                { src: 'assets/fluoro/sjm/sjm_23mm_LAO28_CAUD9.png', cap: 'SJM 23 mm — LAO28 CAUD9' },
-                { src: 'assets/fluoro/sjm/sjm_AEC_21mm_RAO27_CAUD31.png', cap: 'SJM AEC 21 mm — RAO27 CAUD31' },
-                { src: 'assets/fluoro/sjm/sjm_23mm_LAO17_CRAN12.png', cap: 'SJM 23 mm — LAO17 CRAN12' },
-                { src: 'assets/fluoro/sjm/sjm_23mm_RAO17_CAUD40.png', cap: 'SJM 23 mm — RAO17 CAUD40' }
+                { src: 'assets/fluoro/sjm/sjm-fluoro-overview.png', cap: { en: 'St Jude (article, Fig. 1A)', es: 'St Jude (artículo, Fig. 1A)' } },
+                { src: 'assets/fluoro/sjm/sjm-23mm-fluoro-lao28-caud9.png', cap: 'SJM 23 mm — LAO28 CAUD9' },
+                { src: 'assets/fluoro/sjm/sjm-aec-21mm-fluoro-rao27-caud31.png', cap: 'SJM AEC 21 mm — RAO27 CAUD31' },
+                { src: 'assets/fluoro/sjm/sjm-23mm-fluoro-lao17-cran12.png', cap: 'SJM 23 mm — LAO17 CRAN12' },
+                { src: 'assets/fluoro/sjm/sjm-23mm-fluoro-rao17-caud40.png', cap: 'SJM 23 mm — RAO17 CAUD40' }
             ],
             carbomedics: [
-                { src: 'assets/fluoro/carbomedics/articulo_fig1B_carbomedics.png', cap: { en: 'CarboMedics (article, Fig. 1B)', es: 'CarboMedics (artículo, Fig. 1B)' } },
-                { src: 'assets/fluoro/carbomedics/cm_21mm_LAO16_CRAN19.png', cap: 'CarboMedics 21 mm — LAO16 CRAN19' },
-                { src: 'assets/fluoro/carbomedics/cm_25mm_RAO55_CAUD33.png', cap: 'CarboMedics 25 mm — RAO55 CAUD33' },
-                { src: 'assets/fluoro/carbomedics/cm_1986_perfil_y_fluoro.png', cap: 'CarboMedics (1986)' }
+                { src: 'assets/fluoro/carbomedics/carbomedics-fluoro-overview.png', cap: { en: 'CarboMedics (article, Fig. 1B)', es: 'CarboMedics (artículo, Fig. 1B)' } },
+                { src: 'assets/fluoro/carbomedics/carbomedics-21mm-fluoro-lao16-cran19.png', cap: 'CarboMedics 21 mm — LAO16 CRAN19' },
+                { src: 'assets/fluoro/carbomedics/carbomedics-25mm-fluoro-rao55-caud33.png', cap: 'CarboMedics 25 mm — RAO55 CAUD33' },
+                { src: 'assets/fluoro/carbomedics/carbomedics-1986-profile-fluoro.png', cap: 'CarboMedics (1986)' }
             ],
             'medtronic-ats': [
-                { src: 'assets/fluoro/medtronic-ats/articulo_fig1C_ats.png', cap: { en: 'ATS (article, Fig. 1C)', es: 'ATS (artículo, Fig. 1C)' } },
-                { src: 'assets/ats_openpivot/ats-fluoro.png', cap: 'ATS 27 mm — LAO23 CAUD6' },
-                { src: 'assets/ats_openpivot/ats-fluoro2.png', cap: 'ATS' }
+                { src: 'assets/fluoro/medtronic-ats/medtronic-ats-fluoro-overview.png', cap: { en: 'ATS (article, Fig. 1C)', es: 'ATS (artículo, Fig. 1C)' } },
+                { src: 'assets/ats_openpivot/medtronic-ats-aortic-27mm-fluoro-lao23-caud6.png', cap: 'ATS 27 mm — LAO23 CAUD6' },
+                { src: 'assets/ats_openpivot/medtronic-ats-aortic-fluoro-85deg.png', cap: 'ATS' }
             ],
-            onx: [{ src: 'assets/fluoro/onx/onx_1996_foto_y_fluoro.png', cap: 'On-X (1996)' }],
-            bicarbon: [{ src: 'assets/fluoro/bicarbon/bicarbon_1990_foto_y_fluoro.png', cap: 'Sorin Bicarbon (1990)' }],
-            jyros: [{ src: 'assets/fluoro/jyros/jyros_foto_y_fluoro.png', cap: 'Jyros' }],
-            'hp-biplus': [{ src: 'assets/fluoro/hp-biplus/hpbiplus_foto_y_fluoro.png', cap: 'HP-Biplus' }]
+            onx: [{ src: 'assets/fluoro/onx/onx-1996-photo-fluoro.png', cap: 'On-X (1996)' }],
+            bicarbon: [{ src: 'assets/fluoro/bicarbon/bicarbon-1990-photo-fluoro.png', cap: 'Sorin Bicarbon (1990)' }],
+            jyros: [{ src: 'assets/fluoro/jyros/jyros-photo-fluoro.png', cap: 'Jyros' }],
+            'hp-biplus': [{ src: 'assets/fluoro/hp-biplus/hp-biplus-photo-fluoro.png', cap: 'HP-Biplus' }]
         };
 
 
@@ -2094,7 +2825,10 @@
         }
 
         // Elementos de galería: 'ruta' o { src, cap }
-        const normMedia = (list, cap) => (list || []).map(m => typeof m === 'string' ? { src: m, cap } : { src: m.src, cap: L(m.cap) || cap });
+        const normMedia = (list, cap) => (list || []).map(m => {
+            const src = typeof m === 'string' ? m : m.src, info = MEDIA[src];
+            return { src, cap: info ? L(info.cap) : (typeof m === 'string' ? cap : (L(m.cap) || cap)), cred: info && info.cred || '' };
+        });
         const dedupe = list => { const seen = new Set(); return list.filter(m => !seen.has(m.src) && seen.add(m.src)); };
 
         function mediaHTML(items, offset, slots) {
@@ -2190,35 +2924,35 @@
         //  GUÍA DE PLANIFICACIÓN ViMech (contenido del artículo del equipo)
         // =====================================================================
         const GUIDE = [
-            { id: 'identify', fig: 'assets/guide/fig1_fluoroscopia_SJM_CM_ATS.png', link: '#/fluoro',
+            { id: 'identify', fig: 'assets/guide/fluoro-identification-sjm-cm-ats.png', link: '#/fluoro',
               t: { en: 'Fluoroscopic identification', es: 'Identificación fluoroscópica' },
               p: { en: ['Leaflet fracture of mechanical valves is feasible with commercially available angioplasty balloons, so with current evidence the technique is limited to bileaflet mechanical valves.', 'Use the fluoroscopic characteristics of each valve to identify it on the table.'],
                    es: ['La fractura de los discos de una válvula mecánica es factible con balones de angioplastia comerciales, por lo que con la evidencia actual la técnica se limita a válvulas mecánicas bidisco.', 'Usa los rasgos fluoroscópicos de cada válvula para identificarla en la mesa.'] },
-              cap: { en: 'Figure 1. Fluoroscopic identification: A St Jude, B CarboMedics, C ATS.', es: 'Figura 1. Identificación fluoroscópica: A St Jude, B CarboMedics, C ATS.' } },
-            { id: 'trueid', fig: 'assets/guide/fig2_diametro_interno.jpg',
+              cap: { en: 'Fluoroscopic identification: A St Jude, B CarboMedics, C ATS.', es: 'Identificación fluoroscópica: A St Jude, B CarboMedics, C ATS.' } },
+            { id: 'trueid', fig: 'assets/guide/internal-diameter-schematic.jpg',
               t: { en: 'Design and true internal diameter', es: 'Diseño y diámetro interno real' },
               p: { en: ['The nominal size of a bileaflet valve is broadly consistent with the tissue annulus it is meant to fit. The measurements that matter for TAVI sizing are tissue annulus diameter, geometric orifice area and internal diameter.', 'The true internal diameter (ID) is not the tissue annulus diameter (TAD). TAD is the smallest flow area within the native annulus, measured intraoperatively with cylindrical sizers; ID is the minimum diameter inside the prosthesis through which blood flows.', 'Size the THV on the true ID and the geometric orifice area. Rule out pannus with transoesophageal echocardiography, as it can reduce the true ID further.'],
                    es: ['La talla nominal de una válvula bidisco se corresponde, en líneas generales, con el anillo tisular al que va destinada. Las medidas que importan para elegir el TAVI son el diámetro del anillo tisular, el área geométrica del orificio y el diámetro interno.', 'El diámetro interno real (DI) no es el diámetro del anillo tisular (TAD). El TAD es el área de flujo más pequeña dentro del anillo nativo, medida en quirófano con medidores cilíndricos; el DI es el diámetro mínimo dentro de la prótesis por el que pasa la sangre.', 'Elige el THV según el DI real y el área geométrica del orificio. Descarta pannus con ecocardiografía transesofágica, porque puede reducir aún más el DI real.'] },
-              cap: { en: 'Figure 2. Internal diameter of a mechanical valve.', es: 'Figura 2. Diámetro interno de una válvula mecánica.' } },
+              cap: { en: 'Internal diameter of a mechanical valve.', es: 'Diámetro interno de una válvula mecánica.' } },
             { id: 'thv', calc: true,
               t: { en: 'THV size and design', es: 'Tamaño y diseño del THV' },
               p: { en: ['Know the design of the THV (intra-annular or supra-annular) to position it correctly inside the prosthesis.', 'Balloon-expandable valves are generally preferred for their radial strength and their ability to fracture or entrap a disc that has not dislodged with predilation.', 'Each valve sheet shows the suggested size of every commercial THV for each prosthesis size.'],
                    es: ['Conoce el diseño del THV (intraanular o supraanular) para posicionarlo correctamente dentro de la prótesis.', 'En general se prefieren las válvulas balón-expandibles por su fuerza radial y por su capacidad para fracturar o atrapar un disco que no se haya desprendido con la predilatación.', 'Cada ficha muestra el tamaño sugerido de cada THV comercial para cada talla de prótesis.'] } },
-            { id: 'cross', fig: 'assets/guide/fig3_cruce_guia.png',
+            { id: 'cross', fig: 'assets/guide/wire-crossing-schematic.png',
               t: { en: 'Wire crossing and predilation', es: 'Cruce de guía y predilatación' },
               p: { en: ['Bench testing showed the wire should cross between the two leaflets (orifice B), which facilitates leaflet fracture during predilation.', 'Balloon predilation was the most effective way to dislodge the discs, more than snaring. Use a peripheral balloon sized on CT and fluoroscopy measurements.', 'One or both discs may fracture and embolise. Avoid rapid pacing during predilation so the embolised discs do not move into the left ventricle.'],
                    es: ['En banco se comprobó que la guía debe cruzar entre los dos discos (orificio B), lo que facilita la fractura durante la predilatación.', 'La predilatación con balón fue la forma más eficaz de desprender los discos, más que el lazo. Usa un balón periférico dimensionado según TC y fluoroscopia.', 'Uno o ambos discos pueden fracturarse y embolizar. Evita el marcapasos rápido durante la predilatación para que los discos no pasen al ventrículo izquierdo.'] },
-              cap: { en: 'Figure 3. Cross the wire through orifice B to facilitate leaflet fracture during predilation.', es: 'Figura 3. Cruza la guía por el orificio B para facilitar la fractura durante la predilatación.' } },
-            { id: 'depth', fig: 'assets/guide/fig4_profundidad_implante.png', video: 'assets/SJM Regent/myvalv_sjm.mp4',
+              cap: { en: 'Cross the wire through orifice B to facilitate leaflet fracture during predilation.', es: 'Cruza la guía por el orificio B para facilitar la fractura durante la predilatación.' } },
+            { id: 'depth', fig: 'assets/guide/implant-depth-bev-sev-schematic.png', video: 'assets/SJM Regent/sjm-aortic-myval-implant-video.mp4',
               t: { en: 'Implantation position', es: 'Posición de implante' },
               p: { en: ['The prosthetic valve ring is the landmark for THV implantation. Orient the valve in a lateral view on fluoroscopy.', 'Balloon-expandable valves: ideal height 80:20 (aortic:ventricular). Self-expanding valves: depth up to 3 mm is acceptable.', 'A higher implant can lead to valve embolisation.'],
                    es: ['El anillo de la prótesis es la referencia para implantar el THV. Orienta la válvula en una proyección lateral en fluoroscopia.', 'Válvulas balón-expandibles: altura ideal 80:20 (aórtico:ventricular). Válvulas autoexpandibles: se acepta una profundidad de hasta 3 mm.', 'Un implante más alto puede provocar la embolización de la válvula.'] },
-              cap: { en: 'Figure 4. Implantation depth for TAVI in mechanical valves: A BEV in SJM, B SEV in SJM. Video 1: Myval implantation in a St Jude valve.', es: 'Figura 4. Profundidad de implante del TAVI en válvula mecánica: A BEV en SJM, B SEV en SJM. Vídeo 1: implante de Myval en válvula St Jude.' } },
-            { id: 'compl', fig: 'assets/guide/fig5_flaring_BEV.png',
+              cap: { en: 'Implantation depth for TAVI in mechanical valves: A BEV in SJM, B SEV in SJM. Video 1: Myval implantation in a St Jude valve.', es: 'Profundidad de implante del TAVI en válvula mecánica: A BEV en SJM, B SEV en SJM. Vídeo 1: implante de Myval en válvula St Jude.' } },
+            { id: 'compl', fig: 'assets/guide/bev-flaring-schematic.png',
               t: { en: 'Anticipating complications', es: 'Anticipar complicaciones' },
               p: { en: ['Small mechanical valve: consider TAVI with caution, as current THVs may cause patient–prosthesis mismatch and underexpansion because of the small internal diameter. The team implants slightly higher and flares the BEV.', 'Disc fragments: cerebral protection with a Flower or Sentinel device is advised. Leave the distal end of the Flower device inside the 22F sheath to avoid distal embolisation. In the team’s experience, fragments reaching the peripheral circulation have endothelialised safely.'],
                    es: ['Válvula mecánica pequeña: valora el TAVI con precaución, porque los THV actuales pueden causar desajuste paciente-prótesis e infraexpansión por el diámetro interno reducido. El equipo implanta algo más alto y abocina (flare) la BEV.', 'Fragmentos de disco: se recomienda protección cerebral con dispositivo Flower o Sentinel. Deja el extremo distal del Flower dentro del introductor de 22F para evitar la embolización distal. En la experiencia del equipo, los fragmentos que llegan a la circulación periférica se han endotelizado sin problemas.'] },
-              cap: { en: 'Figure 5. BEV flaring in small mechanical valves to avoid patient–prosthesis mismatch.', es: 'Figura 5. Abocinamiento (flare) de la BEV en válvulas mecánicas pequeñas para evitar el desajuste paciente-prótesis.' } }
+              cap: { en: 'BEV flaring in small mechanical valves to avoid patient–prosthesis mismatch.', es: 'Abocinamiento (flare) de la BEV en válvulas mecánicas pequeñas para evitar el desajuste paciente-prótesis.' } }
         ];
         const GUIDE_REFS = [
             'Amat-Santos IJ, Real C, Galán-Arriola C, et al. Transcatheter aortic valve-in-mechanical valve replacement: a first-in-human study. Eur Heart J. 2026. doi:10.1093/eurheartj/ehag019',
@@ -2271,7 +3005,7 @@
             if (!state.gallery.length) return;
             state.gIdx = (i + state.gallery.length) % state.gallery.length;
             const it = state.gallery[state.gIdx];
-            $('#lb-img').src = asset(it.src); $('#lb-img').alt = it.cap; $('#lb-title').textContent = it.cap;
+            $('#lb-img').dispatchEvent(new Event('load')); $('#lb-img').src = asset(it.src); $('#lb-img').alt = it.cap; $('#lb-title').textContent = it.cap; $('#lb-cred').textContent = it.cred || '';
             $('#lb-count').textContent = state.gallery.length > 1 ? `${state.gIdx + 1} ${t('of')} ${state.gallery.length}` : '';
             $('#lb-prev').hidden = $('#lb-next').hidden = state.gallery.length < 2;
             if (!$('#lightbox').open) openDialog('lightbox');
@@ -2280,9 +3014,60 @@
             $('#lb-prev').addEventListener('click', () => openLightbox(state.gIdx - 1));
             $('#lb-next').addEventListener('click', () => openLightbox(state.gIdx + 1));
             $('#lightbox').addEventListener('keydown', e => { if (e.key === 'ArrowLeft') openLightbox(state.gIdx - 1); if (e.key === 'ArrowRight') openLightbox(state.gIdx + 1); });
-            let x0 = null;
-            $('#lb-stage').addEventListener('pointerdown', e => { x0 = e.clientX; });
-            $('#lb-stage').addEventListener('pointerup', e => { if (x0 === null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) openLightbox(state.gIdx + (dx < 0 ? 1 : -1)); });
+            // Zoom táctil: pellizco (2 dedos), arrastre con zoom, doble toque y rueda del ratón.
+            const stage = $('#lb-stage'), img = $('#lb-img');
+            const Z = { s: 1, x: 0, y: 0 }, pts = new Map();
+            let pinch0 = null, pan0 = null, sw0 = null, lastTap = 0;
+            const MAX = 6;
+            const apply = () => {
+                const w = img.clientWidth, h = img.clientHeight;
+                const mx = Math.max(0, (w * Z.s - stage.clientWidth) / 2), my = Math.max(0, (h * Z.s - stage.clientHeight) / 2);
+                Z.x = Math.min(mx, Math.max(-mx, Z.x)); Z.y = Math.min(my, Math.max(-my, Z.y));
+                if (Z.s <= 1.001) { Z.s = 1; Z.x = Z.y = 0; }
+                img.style.transform = Z.s === 1 ? '' : `translate(${Z.x}px, ${Z.y}px) scale(${Z.s})`;
+                stage.classList.toggle('zoomed', Z.s > 1);
+            };
+            const reset = () => { Z.s = 1; Z.x = Z.y = 0; pts.clear(); pinch0 = pan0 = sw0 = null; apply(); };
+            const zoomAt = (ns, cx, cy) => {
+                ns = Math.min(MAX, Math.max(1, ns));
+                const r = stage.getBoundingClientRect(), ox = cx - (r.left + r.width / 2), oy = cy - (r.top + r.height / 2);
+                const k = ns / Z.s; Z.x = ox - (ox - Z.x) * k; Z.y = oy - (oy - Z.y) * k; Z.s = ns; apply();
+            };
+            const dist = () => { const [a, b] = [...pts.values()]; return Math.hypot(a.x - b.x, a.y - b.y); };
+            const mid = () => { const [a, b] = [...pts.values()]; return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; };
+            stage.addEventListener('pointerdown', e => {
+                if (e.target.closest('.lb-nav')) return;
+                try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+                pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+                if (pts.size === 2) { pinch0 = { d: dist(), s: Z.s }; sw0 = null; pan0 = null; }
+                else if (pts.size === 1) { pan0 = { x: e.clientX, y: e.clientY, zx: Z.x, zy: Z.y }; sw0 = Z.s === 1 ? e.clientX : null; }
+            });
+            stage.addEventListener('pointermove', e => {
+                if (!pts.has(e.pointerId)) return;
+                pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+                if (pts.size === 2 && pinch0) { const m = mid(); zoomAt(pinch0.s * dist() / pinch0.d, m.x, m.y); }
+                else if (pts.size === 1 && pan0 && Z.s > 1) { Z.x = pan0.zx + e.clientX - pan0.x; Z.y = pan0.zy + e.clientY - pan0.y; apply(); }
+            });
+            const end = e => {
+                if (!pts.has(e.pointerId)) return;
+                const wasOne = pts.size === 1;
+                pts.delete(e.pointerId);
+                if (pts.size === 1) { const [p] = [...pts.values()]; pan0 = { x: p.x, y: p.y, zx: Z.x, zy: Z.y }; pinch0 = null; return; }
+                if (!wasOne) return;
+                pinch0 = null; pan0 = null;
+                if (e.type === 'pointercancel') { sw0 = null; return; }
+                const dx = sw0 === null ? 0 : e.clientX - sw0; sw0 = null;
+                if (Z.s === 1 && Math.abs(dx) > 50) { openLightbox(state.gIdx + (dx < 0 ? 1 : -1)); return; }
+                if (e.target.closest?.('.lb-nav')) return;
+                const now = Date.now();
+                if (now - lastTap < 300) { Z.s > 1 ? reset() : zoomAt(2.5, e.clientX, e.clientY); lastTap = 0; } else lastTap = now;
+            };
+            stage.addEventListener('pointerup', end); stage.addEventListener('pointercancel', end);
+            stage.addEventListener('wheel', e => { e.preventDefault(); zoomAt(Z.s * (e.deltaY < 0 ? 1.2 : 1 / 1.2), e.clientX, e.clientY); }, { passive: false });
+            img.addEventListener('dragstart', e => e.preventDefault());
+            img.addEventListener('load', reset);
+            window.addEventListener('resize', apply);
+            $('#lightbox').addEventListener('close', reset);
             $('#lightbox').addEventListener('close', () => $('#lb-img').removeAttribute('src'));
         }
 
