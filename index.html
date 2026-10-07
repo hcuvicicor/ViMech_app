@@ -527,6 +527,22 @@
         .unit-card b { display: block; color: var(--maroon); font-size: var(--fs-md); letter-spacing: .04em; }
         .unit-card span { display: block; color: var(--ink-2); font-size: var(--fs-sm); line-height: 1.4; margin-top: 2px; }
         .foot-unit { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--maroon); font-weight: 600; font-size: var(--fs-xs); letter-spacing: .03em; text-decoration: none; background: none; border: 0; padding: 4px 8px; cursor: pointer; font-family: inherit; }
+        /* ficha del fabricante, esquema de dimensiones, notificar error */
+        .mk-btn { display: inline-flex; align-items: center; gap: 8px; }
+        .mk-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+        .mk-row:last-of-type { border-bottom: 0; }
+        .mk-row .mk-ic { flex: none; width: 22px; height: 22px; color: var(--ink-2); margin-top: 2px; } .mk-row .mk-ic svg { width: 22px; height: 22px; }
+        .mk-row small { display: block; color: var(--ink-3); font-size: var(--fs-xs); font-weight: 600; letter-spacing: .03em; text-transform: uppercase; margin-bottom: 2px; }
+        .mk-row a { color: var(--accent); overflow-wrap: anywhere; }
+        .dim-box { margin: 14px 0 4px; padding: 10px 12px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+        .dim-box h4 { margin: 0 0 4px; font-size: var(--fs-sm); color: var(--ink-2); }
+        .dim-svg { display: block; width: 100%; height: auto; max-height: 300px; }
+        .dim-svg .d-wall { fill: var(--ink-2); } .dim-svg .d-leaf { fill: var(--ink-3); opacity: .75; }
+        .dim-svg .d-ring { fill: color-mix(in srgb, var(--accent) 28%, var(--card)); stroke: var(--accent); stroke-width: 1.5; }
+        .dim-svg .dl { stroke: var(--ink-3); stroke-width: 1; fill: none; } .dim-svg .dl.ext { stroke-dasharray: 2 3; }
+        .dim-svg .dt { font-size: 10.5px; fill: var(--ink-2); font-family: inherit; } .dim-svg .dv { font-weight: 750; fill: var(--ink); font-variant-numeric: tabular-nums; }
+        .rep { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: var(--fs-sm); color: var(--ink-3); }
+        .rep .btn { text-decoration: none; }
         .foot-unit .logo { height: 30px; }
         .foot-lic { margin-top: 8px; font-size: var(--fs-xs); } .foot-lic button { background: none; border: 0; padding: 4px 8px; color: var(--ink-3); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
@@ -595,6 +611,7 @@
     <dialog id="dlg-disclaimer" class="sheet"><div class="dlg-head"><h2 data-i18n="disclaimer_title"></h2><button class="x" data-close type="button">✕</button></div><div class="dlg-body prose" data-i18n-html="disclaimer_content"></div></dialog>
     <dialog id="dlg-contact" class="sheet"><div class="dlg-head"><h2 data-i18n="contact_title"></h2><button class="x" data-close type="button">✕</button></div><div class="dlg-body prose"><div class="unit-card"><span class="logo"><svg class="icicor-logo" role="img" aria-label="ICICOR" viewBox="2 4 61 116"><path class="pink" fill="#F79A8C" fill-rule="evenodd" d="M7.60 65.04C6.46 64.79 5.45 63.98 5.20 63.13C4.90 62.09 5.16 57.65 5.62 56.07C5.88 55.15 5.91 55.02 6.00 54.04C6.05 53.51 6.18 52.87 6.36 52.29C6.52 51.78 6.71 51.03 6.79 50.62C6.87 50.21 7.00 49.50 7.09 49.04C7.18 48.58 7.40 47.70 7.59 47.08C7.77 46.46 8.00 45.58 8.10 45.12C8.19 44.67 8.37 44.03 8.50 43.71C8.63 43.39 8.81 42.75 8.92 42.29C9.02 41.83 9.25 41.06 9.42 40.56C9.60 40.07 9.84 39.30 9.96 38.86C10.08 38.41 10.32 37.59 10.50 37.04C10.67 36.49 10.95 35.59 11.11 35.04C11.27 34.49 11.53 33.65 11.70 33.18C11.87 32.70 12.08 32.00 12.17 31.61C12.26 31.23 12.44 30.62 12.58 30.27C12.72 29.91 12.92 29.26 13.03 28.82C13.15 28.38 13.33 27.80 13.44 27.53C13.56 27.26 13.77 26.65 13.92 26.17C14.07 25.69 14.36 24.94 14.58 24.50C14.80 24.06 15.01 23.61 15.04 23.50C15.14 23.19 16.44 20.57 16.95 19.67C18.92 16.17 19.88 14.95 21.48 13.89C22.44 13.27 26.46 11.19 27.00 11.04C27.11 11.01 27.68 10.77 28.25 10.50C30.86 9.29 31.05 9.21 33.54 8.38C35.11 7.85 37.34 7.89 38.15 8.45C38.92 8.98 39.79 10.47 40.59 12.64C40.77 13.14 41.00 14.76 41.00 15.57C41.00 15.87 41.04 16.60 41.10 17.19C41.25 18.87 41.02 20.56 40.54 21.39C39.83 22.60 38.55 23.38 36.29 24.00C35.37 24.25 34.29 24.61 32.92 25.13C32.25 25.38 31.25 25.96 30.76 26.38C30.24 26.83 29.30 28.08 29.00 28.73C28.85 29.04 28.61 29.50 28.46 29.75C28.31 30.00 28.10 30.47 28.00 30.79C27.89 31.11 27.68 31.61 27.53 31.89C27.31 32.28 27.23 32.56 27.16 33.10C27.07 33.93 27.02 34.10 26.64 34.96C26.34 35.64 26.09 36.76 25.91 38.25C25.85 38.72 25.68 39.44 25.48 40.03C25.19 40.93 25.15 41.15 25.08 42.29C25.04 42.98 24.94 43.86 24.87 44.25C24.80 44.64 24.71 45.35 24.67 45.83C24.63 46.32 24.48 47.15 24.34 47.69C24.17 48.34 24.08 48.88 24.08 49.27C24.08 52.13 22.33 56.45 20.13 59.02C18.34 61.11 15.06 63.34 12.63 64.13C12.17 64.28 11.57 64.48 11.29 64.58C10.15 65.00 8.40 65.22 7.60 65.04Z"/><path class="grey" fill="#D7E0DA" fill-rule="evenodd" d="M32.32 62.26C31.54 61.93 31.30 61.73 30.83 61.07C30.19 60.15 29.85 58.98 29.67 57.14C29.63 56.65 29.51 55.96 29.42 55.61C29.16 54.56 29.08 53.76 29.08 52.07C29.08 48.76 28.98 48.45 27.32 46.69C25.85 45.15 25.80 44.95 26.08 41.83L26.19 40.62L25.96 40.27C25.63 39.77 25.71 39.51 26.31 39.14C26.80 38.83 26.89 38.65 27.04 37.71C27.11 37.25 27.27 36.61 27.39 36.29C27.60 35.75 27.62 35.61 27.62 34.46C27.63 32.87 27.75 32.59 28.70 31.89C29.67 31.16 29.73 31.14 30.98 31.10C31.89 31.07 32.26 31.09 33.07 31.25L34.06 31.43L35.51 31.21C37.22 30.94 38.50 30.67 39.54 30.35C40.28 30.13 40.33 30.12 42.50 30.12L44.71 30.12L45.62 30.39C46.13 30.54 46.92 30.74 47.38 30.84C48.28 31.03 48.47 31.11 49.17 31.58C49.42 31.75 49.83 32.02 50.09 32.19C50.56 32.48 50.66 32.62 51.40 33.88C51.87 34.67 51.94 35.03 51.90 36.39L51.87 37.54L51.47 38.42C50.71 40.06 50.58 40.29 50.04 40.94C49.48 41.60 48.57 42.39 47.28 43.33C46.87 43.63 46.28 44.10 45.96 44.38C45.64 44.65 44.98 45.21 44.49 45.61C42.96 46.86 42.25 47.75 42.04 48.71C41.97 49.03 41.83 49.59 41.74 49.96C41.51 50.89 41.36 51.74 41.25 52.67C40.96 55.22 40.92 55.44 40.63 56.04C40.47 56.36 40.21 56.94 40.05 57.32C39.69 58.17 39.31 58.68 38.08 59.95C36.80 61.26 36.25 61.62 34.76 62.11C33.38 62.56 33.08 62.58 32.32 62.26Z"/><path class="red" fill="#D80006" fill-rule="evenodd" d="M41.70 112.72C40.87 112.32 40.59 111.74 40.58 110.40C40.58 109.70 40.55 109.58 40.33 109.17C40.19 108.91 40.08 108.64 40.08 108.56C40.08 108.15 41.15 107.97 42.22 108.21C43.04 108.39 43.39 108.35 44.63 107.91C46.09 107.40 46.35 107.35 46.70 107.52C48.24 108.25 46.52 111.21 43.80 112.51C42.85 112.96 42.32 113.02 41.70 112.72ZM45.83 95.91C45.26 95.88 44.17 95.81 43.42 95.76C42.66 95.71 41.69 95.60 41.25 95.50C40.81 95.41 40.31 95.34 40.12 95.33C39.94 95.33 39.34 95.26 38.79 95.16C38.14 95.05 37.12 94.97 35.88 94.92C33.80 94.84 33.96 94.87 32.02 94.17C30.87 93.76 30.79 93.72 29.63 92.95C27.39 91.47 27.22 91.32 22.54 87.21C21.57 86.36 20.49 85.52 19.54 84.88C14.07 81.23 10.89 77.89 10.12 75.01C9.84 73.93 9.84 71.02 10.12 69.92C10.41 68.78 11.27 67.98 12.48 67.75C13.66 67.52 15.67 67.88 17.30 68.61C17.66 68.77 18.16 68.98 18.40 69.08C18.64 69.17 19.05 69.38 19.29 69.54C19.54 69.70 19.94 69.93 20.18 70.05C20.43 70.17 20.93 70.46 21.29 70.70C22.64 71.59 23.15 71.91 23.59 72.13C23.84 72.25 24.15 72.43 24.29 72.53C24.43 72.63 24.86 72.88 25.25 73.09C25.64 73.30 26.16 73.59 26.42 73.73C26.67 73.87 27.17 74.06 27.52 74.16C27.88 74.26 28.46 74.48 28.82 74.65C29.17 74.83 29.72 75.04 30.04 75.12C30.36 75.20 30.92 75.39 31.29 75.55C32.02 75.88 34.41 76.33 35.38 76.33C37.16 76.34 38.65 75.36 40.74 72.84C41.77 71.60 42.84 69.81 43.08 68.93C43.13 68.73 43.31 68.28 43.46 67.92C43.89 66.94 44.04 65.57 44.17 61.00C44.31 56.22 44.32 55.97 44.46 55.42C44.76 54.14 44.91 53.32 45.00 52.50C45.16 50.99 45.25 50.56 45.55 49.83C45.71 49.44 45.93 48.88 46.04 48.58C46.30 47.82 46.42 47.61 46.95 46.96C47.58 46.20 48.52 45.44 49.04 45.29C49.60 45.12 50.77 45.13 51.29 45.32C52.74 45.82 54.51 47.91 54.92 49.61C55.02 50.03 55.24 50.71 55.40 51.12C55.58 51.60 55.73 52.19 55.80 52.71C55.87 53.17 55.99 53.95 56.08 54.46C56.17 54.96 56.27 55.60 56.30 55.88C56.33 56.15 56.44 56.66 56.54 57.00C56.75 57.67 56.87 58.57 57.00 60.25C57.08 61.33 57.26 62.30 57.58 63.54C57.71 64.01 57.79 64.76 57.88 66.02C58.05 68.71 58.13 69.52 58.46 72.00C58.64 73.31 58.70 75.03 58.70 78.50C58.71 82.15 58.66 82.92 58.29 84.71C58.14 85.44 57.97 86.37 57.92 86.78C57.85 87.31 57.73 87.72 57.50 88.24C57.32 88.63 57.10 89.28 57.00 89.67C56.90 90.06 56.71 90.58 56.57 90.83C56.43 91.09 56.15 91.58 55.95 91.94C55.12 93.45 54.03 94.46 52.53 95.12C50.66 95.95 50.68 95.94 48.67 95.96C47.68 95.97 46.41 95.95 45.83 95.91Z"/><path class="black" fill="#1A1A1A" fill-rule="evenodd" d="M41.23 114.83C40.52 114.65 40.23 114.39 39.71 113.46C39.09 112.34 38.82 110.82 39.08 109.88C39.29 109.13 39.96 108.85 40.37 109.34C40.57 109.58 40.58 109.66 40.58 110.39C40.58 111.76 40.89 112.37 41.76 112.75C42.38 113.01 42.87 112.96 43.80 112.51C46.52 111.20 48.24 108.25 46.70 107.52C46.35 107.35 46.09 107.40 44.63 107.91C43.40 108.34 43.03 108.39 42.27 108.22C41.94 108.14 41.40 108.08 41.06 108.08C40.34 108.08 40.06 107.93 39.39 107.14C38.71 106.35 38.70 105.89 39.35 105.23C39.82 104.75 39.86 104.52 39.50 104.23C38.99 103.79 37.61 103.71 36.69 104.07C35.79 104.41 34.43 105.58 34.07 106.31C33.69 107.11 33.51 109.60 33.79 110.42C34.11 111.36 34.48 111.72 35.66 112.21C36.81 112.68 37.18 113.09 36.91 113.58C36.73 113.90 36.25 114.02 35.42 113.98C34.02 113.90 32.73 113.08 31.82 111.68C31.25 110.81 31.16 110.44 31.11 108.92C31.05 107.11 31.11 106.85 32.17 104.62C32.55 103.83 33.87 102.66 34.83 102.28C36.11 101.77 38.77 101.78 39.89 102.29C40.73 102.67 41.76 103.35 41.92 103.61C42.29 104.22 42.10 104.63 41.32 104.93C40.58 105.21 40.46 105.48 40.91 105.86C41.67 106.49 42.94 106.37 45.12 105.45C46.58 104.85 47.72 105.06 48.80 106.14C50.02 107.36 50.12 108.70 49.13 110.48C48.02 112.46 46.60 113.64 44.12 114.63C43.48 114.88 41.88 115.00 41.23 114.83ZM59.12 114.43C58.48 114.03 57.49 112.36 57.08 110.97C56.98 110.64 56.77 110.04 56.61 109.63C56.13 108.39 56.37 107.51 57.53 106.18C58.14 105.48 58.30 104.97 58.07 104.46C57.88 104.04 57.24 103.87 56.75 104.12C56.07 104.48 55.20 106.10 54.89 107.62C54.77 108.17 54.57 108.98 54.43 109.42C54.29 109.85 54.08 110.62 53.96 111.11C53.84 111.61 53.69 112.12 53.63 112.24C53.14 113.17 52.16 113.21 51.93 112.30C51.76 111.62 52.10 109.18 52.52 108.12C52.61 107.90 52.85 107.01 53.04 106.17C53.58 103.90 53.75 103.51 54.48 102.82C55.07 102.27 55.30 102.17 56.35 102.07C57.94 101.91 58.83 102.16 59.67 103.00C60.16 103.48 60.53 104.15 60.62 104.71C60.72 105.32 60.23 106.63 59.54 107.60C59.00 108.35 58.89 108.65 58.89 109.36C58.89 110.01 58.89 110.01 59.54 111.27C59.90 111.96 60.30 112.70 60.43 112.91C61.08 113.93 60.13 115.04 59.12 114.43ZM19.78 113.88C19.20 113.75 19.00 113.65 18.00 113.04C16.68 112.22 15.80 111.00 15.27 109.25C15.08 108.62 15.09 107.21 15.28 106.54C15.90 104.44 17.33 103.09 18.99 103.02C19.83 102.98 20.18 103.14 20.38 103.63C20.57 104.07 20.36 104.46 19.75 104.81C18.80 105.35 18.56 105.53 18.29 105.91C17.86 106.50 17.71 107.07 17.71 108.08C17.71 109.21 17.87 109.60 18.65 110.36C19.34 111.02 19.62 111.17 20.86 111.49C22.31 111.87 22.75 112.22 22.64 112.90C22.49 113.78 21.27 114.20 19.78 113.88ZM9.61 112.92C8.95 112.64 9.02 111.42 9.91 108.19C10.37 106.54 11.15 104.74 11.55 104.43C12.10 104.00 12.89 104.37 13.08 105.15C13.21 105.69 12.98 106.54 12.39 107.77C11.86 108.86 11.47 110.02 11.33 110.96C11.20 111.87 10.96 112.46 10.64 112.70C10.34 112.93 9.87 113.03 9.61 112.92ZM27.08 112.14C26.92 112.04 26.68 111.77 26.54 111.55L26.29 111.14L26.29 108.96C26.30 106.58 26.42 105.57 26.78 104.84C27.38 103.63 28.78 103.95 29.03 105.35C29.10 105.73 28.90 107.42 28.62 108.81C28.49 109.47 28.42 110.11 28.42 110.62C28.42 111.52 28.31 111.88 27.96 112.15C27.66 112.38 27.43 112.38 27.08 112.14ZM28.33 102.49C27.76 102.26 27.25 101.54 27.25 100.95C27.25 100.35 27.67 99.96 28.26 100.02C29.48 100.14 30.09 101.75 29.14 102.37C28.88 102.54 28.57 102.59 28.33 102.49ZM12.56 102.27C12.23 102.06 11.97 101.49 12.04 101.12C12.22 100.14 13.46 99.85 13.86 100.69C14.35 101.72 13.45 102.82 12.56 102.27Z"/></svg></span><div><b>ICICOR</b><span data-i18n="unit_name"></span></div></div><div data-i18n-html="contact_content"></div></div></dialog>
     <dialog id="dlg-credits" class="sheet"><div class="dlg-head"><h2 data-i18n="credits_title"></h2><button class="x" data-close type="button">✕</button></div><div class="dlg-body prose" id="credits-body"></div></dialog>
+    <dialog id="dlg-maker" class="sheet"><div class="dlg-head"><h2 data-i18n="mk_title"></h2><button class="x" data-close type="button">✕</button></div><div class="dlg-body prose" id="maker-body"></div></dialog>
     <dialog id="dlg-sources" class="sheet"><div class="dlg-head"><h2 data-i18n="menu_sources"></h2><button class="x" data-close type="button">✕</button></div><div class="dlg-body prose" id="sources-body"></div></dialog>
 
     <!-- CALCULADORA -->
@@ -678,7 +695,7 @@
                 theme_auto: 'Auto', theme_light: 'Light', theme_dark: 'Dark',
                 menu_sources: 'Data sources', menu_about: 'About', menu_disclaimer: 'Disclaimer & copyright', menu_contact: 'Contact', menu_privacy: 'Privacy policy',
                 about_title: 'About ViMech',
-                about_content: '<p><strong>ViMech</strong> is a quick-reference guide to the fluoroscopic identification and design of mechanical heart valves, intended as a reference for valve-in-mechanical (TAVI in mechanical prosthesis) procedures.</p><p>Each model shows the document its dimensions come from. Models marked <em>unverified</em> keep their previous values because no official source has been located yet.</p><p><strong>Copyright notice:</strong> all product names, trademarks, logos and images belong to their respective owners (Abbott, Medtronic, Corcym, Artivion, Meril, etc.). They are used for educational, identification and clinical reference purposes.</p>',
+                about_content: '<p><strong>ViMech</strong> is a quick-reference guide to the fluoroscopic identification and design of mechanical heart valves, intended as a reference for valve-in-mechanical (TAVI in mechanical prosthesis) procedures.</p><p>Each model shows the document its dimensions come from. Models marked <em>unverified</em> use the hospital's own data because no official source has been located yet.</p><p><strong>Copyright notice:</strong> all product names, trademarks, logos and images belong to their respective owners (Abbott, Medtronic, Corcym, Artivion, Meril, etc.). They are used for educational, identification and clinical reference purposes.</p>',
                 disclaimer_title: 'Disclaimer',
                 disclaimer_content: '<p><strong>Intended purpose:</strong> ViMech is an educational reference that gathers published dimensions of mechanical heart valves and fluoroscopic identification features. It does not process patient data, does not make diagnostic or therapeutic decisions and is not a medical device.</p><p>This tool is for informational and educational purposes only. It does not replace the manufacturer\'s instructions for use, imaging-based assessment or clinical judgement. Always verify dimensions against the official documentation before any procedure.</p><p>TAVI sizing suggestions are indicative and must be confirmed by the heart team. The creators accept no liability for errors or omissions.</p><p><strong>Non-affiliation:</strong> this is an independent application, not affiliated with, endorsed or sponsored by any of the manufacturers mentioned.</p>',
                 contact_title: 'Contact',
@@ -688,7 +705,7 @@
                 footer_disclaimer: 'Reference tool. Verify all values against the manufacturer\'s IFU. Not a substitute for clinical judgement.',
                 back: 'Back', images: 'Images & design', specs: 'Technical specifications', tavi: 'TAVI size selection',
                 fluoro: 'Fluoroscopic identification', positioning: 'Positioning & deployment',
-                source_ok: 'Official source:', source_none: 'No official source located — values kept as previously entered and not verified.',
+                source_ok: 'Official source:', source_none: 'No official source located — values come from the hospital's own data and have not been checked against a manufacturer document.',
                 tavi_source: 'Source:', caution: 'Caution', caution_legend: 'use with care / borderline sizing',
                 orphan_rows: 'Rows in grey: size not listed in the manufacturer\'s specifications.',
                 missing_tavi: 'No TAVI data for size(s):',
@@ -725,7 +742,7 @@
                 theme_auto: 'Auto', theme_light: 'Claro', theme_dark: 'Oscuro',
                 menu_sources: 'Fuentes de datos', menu_about: 'Acerca de', menu_disclaimer: 'Aviso legal y copyright', menu_contact: 'Contacto', menu_privacy: 'Política de privacidad',
                 about_title: 'Acerca de ViMech',
-                about_content: '<p><strong>ViMech</strong> es una guía de consulta rápida sobre la identificación fluoroscópica y el diseño de las válvulas cardíacas mecánicas, pensada como referencia para procedimientos valve-in-mechanical (TAVI en prótesis mecánica).</p><p>Cada modelo indica el documento del que proceden sus dimensiones. Los modelos marcados como <em>sin verificar</em> conservan los valores anteriores porque todavía no se ha localizado una fuente oficial.</p><p><strong>Aviso de copyright:</strong> todos los nombres de producto, marcas, logotipos e imágenes pertenecen a sus respectivos propietarios (Abbott, Medtronic, Corcym, Artivion, Meril, etc.). Se usan con fines educativos, de identificación y de referencia clínica.</p>',
+                about_content: '<p><strong>ViMech</strong> es una guía de consulta rápida sobre la identificación fluoroscópica y el diseño de las válvulas cardíacas mecánicas, pensada como referencia para procedimientos valve-in-mechanical (TAVI en prótesis mecánica).</p><p>Cada modelo indica el documento del que proceden sus dimensiones. Los modelos marcados como <em>sin verificar</em> usan datos propios del hospital porque todavía no se ha localizado una fuente oficial.</p><p><strong>Aviso de copyright:</strong> todos los nombres de producto, marcas, logotipos e imágenes pertenecen a sus respectivos propietarios (Abbott, Medtronic, Corcym, Artivion, Meril, etc.). Se usan con fines educativos, de identificación y de referencia clínica.</p>',
                 disclaimer_title: 'Aviso legal',
                 disclaimer_content: '<p><strong>Finalidad prevista:</strong> ViMech es una referencia educativa que recopila las dimensiones publicadas de las válvulas cardíacas mecánicas y sus rasgos de identificación fluoroscópica. No procesa datos de pacientes, no toma decisiones diagnósticas ni terapéuticas y no es un producto sanitario.</p><p>Esta herramienta tiene fines informativos y educativos. No sustituye a las instrucciones de uso del fabricante, a la valoración por imagen ni al juicio clínico. Verifique siempre las dimensiones con la documentación oficial antes de cualquier procedimiento.</p><p>Las sugerencias de tamaño TAVI son orientativas y deben confirmarse por el Heart Team. Los creadores no se responsabilizan de errores u omisiones.</p><p><strong>No afiliación:</strong> aplicación independiente, sin afiliación, respaldo ni patrocinio de ninguno de los fabricantes mencionados.</p>',
                 contact_title: 'Contacto',
@@ -735,7 +752,7 @@
                 footer_disclaimer: 'Herramienta de referencia. Verifique todos los valores con las IFU del fabricante. No sustituye al juicio clínico.',
                 back: 'Volver', images: 'Imágenes y diseño', specs: 'Especificaciones técnicas', tavi: 'Selección de tamaño TAVI',
                 fluoro: 'Identificación fluoroscópica', positioning: 'Posicionamiento y despliegue',
-                source_ok: 'Fuente oficial:', source_none: 'Sin fuente oficial localizada — se mantienen los valores introducidos previamente, sin verificar.',
+                source_ok: 'Fuente oficial:', source_none: 'Sin fuente oficial localizada — los valores proceden de datos propios del hospital y no se han contrastado con un documento del fabricante.',
                 tavi_source: 'Fuente:', caution: 'Precaución', caution_legend: 'usar con cautela / tamaño límite',
                 orphan_rows: 'Filas en gris: talla no incluida en las especificaciones del fabricante.',
                 missing_tavi: 'Sin datos TAVI para la(s) talla(s):',
@@ -766,7 +783,7 @@
         Object.assign(translations.en, {
             tab_valves: 'Valves', tab_sources: 'Sources', tab_more: 'More', calc_short: 'ViV estimate',
             hero_lead: 'Fluoroscopic identification, design and dimensions of mechanical heart valves, with TAVI sizing for valve-in-mechanical procedures.',
-            prov_off: 'Official source', prov_own: 'Own data (previous versions)', prov_caution: 'Caution',
+            prov_off: 'Official source', prov_own: 'Hospital own data', prov_caution: 'Caution',
             prov_title: 'Colour code for values',
             catalogue: 'Catalogue', recent: 'Recently viewed',
             brands_n: n => `${n} brands`, models_n: n => `${n} ${n === 1 ? 'model' : 'models'}`,
@@ -787,7 +804,14 @@
             cr_cc0: 'Public-domain dedication (CC0 1.0)', cr_images_n: n => `${n} ${n === 1 ? 'image' : 'images'}`,
             cr_other_h: 'Other figures', cr_other_p: 'Fluoroscopic images, comparison figures and schematics not listed above are reproduced for educational identification. Rights remain with their respective owners or authors.',
             cr_take_h: 'Rights holders', cr_take_p: 'If you own rights to any material shown here and want it credited differently or removed, write to the contact address in the app and it will be handled promptly.',
-            source_own_title: 'Own data from previous versions of the app.',
+            mk_btn: 'Manufacturer contact', mk_title: 'Manufacturer contact', mk_tel: 'Phone', mk_mail: 'Email', mk_addr: 'Address', mk_web: 'Website', mk_no_email: 'No email listed', mk_form: 'Contact form',
+            mk_note: 'Details taken from each company\'s public website on 7 October 2026 and subject to change. ViMech is independent and is not affiliated with any manufacturer.',
+            mk_none: 'No active manufacturer contact could be verified for this valve, so none is shown rather than risk a wrong one. If you know the current manufacturer, please tell us.',
+            mk_src: 'Source',
+            dim_h: 'Dimensions', dim_note: 'Profile schematic scaled from the published dimensions of this size; not an exact technical drawing. Always check the manufacturer\'s IFU.',
+            dim_id: 'Internal diameter', dim_tad: 'Tissue annulus diameter', dim_cod: 'Sewing ring outer diameter', dim_oho: 'Overall height',
+            rep_btn: 'Report an error', rep_hint: 'Does a value differ from the manufacturer\'s IFU?', rep_sub: 'ViMech — error report', rep_body: 'Describe the error and, if possible, attach the manufacturer document and page:',
+            source_own_title: 'Own data of the hospital research unit (ICICOR).',
             prov_lit: 'Unofficial data (literature, distributors)', lit_tag: 'Unofficial',
             hero_title: 'Bileaflet Mechanical Valves at Aortic location',
             tab_fluoro: 'Fluoro', atlas_title: 'Fluoroscopy', atlas_link: 'All fluoroscopy',
@@ -805,7 +829,7 @@
         Object.assign(translations.es, {
             tab_valves: 'Válvulas', tab_sources: 'Fuentes', tab_more: 'Más', calc_short: 'Estimar ViV',
             hero_lead: 'Identificación fluoroscópica, diseño y dimensiones de las válvulas mecánicas, con el tamaño de TAVI para procedimientos valve-in-mechanical.',
-            prov_off: 'Fuente oficial', prov_own: 'Datos propios (versiones anteriores)', prov_caution: 'Precaución',
+            prov_off: 'Fuente oficial', prov_own: 'Datos propios del hospital', prov_caution: 'Precaución',
             prov_title: 'Código de color de los valores',
             catalogue: 'Catálogo', recent: 'Vistas recientemente',
             brands_n: n => `${n} marcas`, models_n: n => `${n} ${n === 1 ? 'modelo' : 'modelos'}`,
@@ -826,7 +850,14 @@
             cr_cc0: 'Dedicación al dominio público (CC0 1.0)', cr_images_n: n => `${n} ${n === 1 ? 'imagen' : 'imágenes'}`,
             cr_other_h: 'Otras figuras', cr_other_p: 'Las imágenes de fluoroscopia, las figuras comparativas y los esquemas no incluidos arriba se reproducen con fines de identificación educativa. Los derechos siguen perteneciendo a sus respectivos titulares o autores.',
             cr_take_h: 'Titulares de derechos', cr_take_p: 'Si es titular de derechos de algún material mostrado aquí y desea que se cite de otro modo o que se retire, escriba a la dirección de contacto de la app y se atenderá con prontitud.',
-            source_own_title: 'Datos propios de versiones anteriores de la app.',
+            mk_btn: 'Contacto del fabricante', mk_title: 'Contacto del fabricante', mk_tel: 'Teléfono', mk_mail: 'Correo', mk_addr: 'Dirección', mk_web: 'Web', mk_no_email: 'Sin correo publicado', mk_form: 'Formulario de contacto',
+            mk_note: 'Datos tomados de la web pública de cada empresa el 7 de octubre de 2026; pueden cambiar. ViMech es independiente y no está afiliada a ningún fabricante.',
+            mk_none: 'No se ha podido verificar un contacto activo del fabricante de esta válvula, por lo que no se muestra ninguno para no dar uno erróneo. Si conoce el fabricante actual, indíquelo.',
+            mk_src: 'Fuente',
+            dim_h: 'Dimensiones', dim_note: 'Esquema de perfil a escala según las dimensiones publicadas de esta talla; no es un plano técnico exacto. Compruebe siempre las IFU del fabricante.',
+            dim_id: 'Diámetro interno', dim_tad: 'Diámetro del anillo tisular', dim_cod: 'Diámetro exterior del anillo de sutura', dim_oho: 'Altura total',
+            rep_btn: 'Notificar un error', rep_hint: '¿Algún valor difiere de las IFU del fabricante?', rep_sub: 'ViMech — notificación de error', rep_body: 'Describa el error y, si es posible, adjunte el documento del fabricante y la página:',
+            source_own_title: 'Datos propios de la unidad de investigación del hospital (ICICOR).',
             prov_lit: 'Datos no oficiales (literatura, distribuidores)', lit_tag: 'No oficial',
             hero_title: 'Bileaflet Mechanical Valves at Aortic location',
             tab_fluoro: 'Fluoro', atlas_title: 'Fluoroscopia', atlas_link: 'Toda la fluoroscopia',
@@ -1052,7 +1083,7 @@
         const MERIL_IMG = [...IMG.meril, 'assets/Meril Miltonia/meril-miltonia-aortic-sizes-photo.png'];
         const K_MER = ['size', 'model', 'tad', 'cod', 'id', 'goa', 'oho', 'ih'];
         const K_ATS_H = ['size', 'model', 'tad', 'id', 'goa', 'ohp', 'iph', 'oph'];
-        const UNVERIFIED_HEIGHTS = { en: 'Inflow/outflow profile heights: values from the previous version of the app; no official source located.', es: 'Alturas de perfil de entrada/salida: valores de la versión anterior de la app; sin fuente oficial localizada.' };
+        const UNVERIFIED_HEIGHTS = { en: 'Inflow/outflow profile heights: values from the hospital's own data; no official source located.', es: 'Alturas de perfil de entrada/salida: valores de datos propios del hospital; sin fuente oficial localizada.' };
 
         const valvesData = [
             {
@@ -2711,6 +2742,7 @@
         const ICON = {
             tavi: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 4v16M17 4v16M7 8l10 4M7 12l10 4M7 16l10-8"/></svg>',
             specs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4v2M12 18v2"/></svg>',
+            mk: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg>',
             fluoro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="4"/></svg>',
             pos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M5 10l7-7 7 7"/></svg>',
             img: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 16l5-5 4 4 3-3 6 6"/></svg>',
@@ -2927,6 +2959,7 @@
                                 ${idr ? `<span class="d-stat">${esc(t('id_label'))} <b class="num">${esc(idr)}</b> mm</span>` : ''}
                             </div>
                             <div style="margin-top:12px">${badge}</div>` : ''}
+                            <div style="margin-top:12px"><button type="button" class="btn ghost mk-btn" style="margin:0;white-space:nowrap" data-maker="${esc(brand.id)}">${ICON.mk}${esc(t('mk_btn'))}</button></div>
                         </div>
                     </div>
                 </section>
@@ -2940,6 +2973,7 @@
                 </div>
                 <div class="wrap d-body">${st ? renderSubtype(brand, pos, idx, st, size) : `<div class="panel"><p class="note">${esc(t('no_models'))}</p></div>`}</div>`;
 
+            $$('[data-maker]', view).forEach(b => b.addEventListener('click', () => openMaker(b.dataset.maker)));
             $$('.switcher [data-pos]').forEach(b => b.addEventListener('click', () => { if (!b.disabled) go(`#/v/${brand.id}/${b.dataset.pos}/0`); }));
             $$('.switcher [data-idx]').forEach(b => b.addEventListener('click', () => go(`#/v/${brand.id}/${pos}/${b.dataset.idx}`)));
             const active = $('.subtabs [aria-pressed="true"]'); if (active) active.scrollIntoView({ block: 'nearest', inline: 'center' });
@@ -2981,7 +3015,75 @@
             return `<section class="panel" id="${id}"><div class="panel-h"><span class="ic">${ICON[icon]}</span><h2>${esc(title)}</h2>${tag || ''}</div>${body}</section>`;
         }
 
-        function sizeSection(st, size) {
+
+        // =====================================================================
+        //  FICHA DEL FABRICANTE (datos de la web pública de cada empresa, 07/10/2026)
+        // =====================================================================
+        const _AB = { name: 'Abbott (St. Jude Medical™)', addr: ['100 Abbott Park Road', 'Abbott Park, Illinois 60064-6400, USA'], tel: ['+1 224 667 6100'], web: 'https://www.cardiovascular.abbott/us/en/contact-us.html', webLabel: 'cardiovascular.abbott/contact-us', src: 'https://www.sec.gov/Archives/edgar/data/1800/000110465918028644/a18-12422_18k.htm' };
+        const _CO = { name: 'Corcym S.r.l.', addr: ['Via Giovanni Spadolini 7, Centro Leoni', '20141 Milano, Italy'], mail: ['communication@corcym.com'], web: 'https://www.corcym.com/contact-us', webLabel: 'corcym.com/contact-us', src: 'https://www.corcym.com/legal' };
+        const CONTACTS = {
+            sjm: _AB, carbomedics: _CO, bicarbon: _CO,
+            'medtronic-ats': { name: 'Medtronic plc (ATS Medical)', addr: ['710 Medtronic Parkway', 'Minneapolis, MN 55432-5604, USA'], tel: ['+1 763 514 4000'], web: 'https://www.medtronic.com/en-us/contact-us.html', webLabel: 'medtronic.com/contact-us', src: 'https://www.medtronic.com/en-us/our-company/locations.html' },
+            onx: { name: 'Artivion, Inc. (On-X®)', addr: ['1655 Roberts Blvd NW', 'Kennesaw, GA 30144, USA', 'On-X Life Technologies: 1300 East Anderson Lane, Bldg B', 'Austin, TX 78752, USA'], tel: ['+1 770 419 3355', '+1 800 438 8285'], web: 'https://artivion.com/contact/', webLabel: 'artivion.com/contact', src: 'https://artivion.com/contact/' },
+            'edwards-duromedics': { name: 'Edwards Lifesciences Corp.', addr: ['One Edwards Way', 'Irvine, CA 92614, USA'], tel: ['+1 949 250 2500'], web: 'https://www.edwards.com/about-us/global-locations', webLabel: 'edwards.com/global-locations', src: 'https://www.edwards.com/about-us/global-locations' },
+            'meril-miltonia': { name: 'Meril Life Sciences Pvt. Ltd.', addr: ['Meril Corporate Office, Near Bilakhia Stadium, Muktanand Marg, Chala', 'Vapi 396 191, Gujarat, India'], tel: ['+91 260 350 9400', '+91 260 240 8000'], mail: ['askinfo@merillife.com'], web: 'https://www.merillife.com/contact-us', webLabel: 'merillife.com/contact-us', src: 'https://www.merillife.com/contact-us' },
+            jyros: null, 'hp-biplus': null
+        };
+        const MK_ICON = {
+            tel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>',
+            mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
+            addr: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+            web: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>'
+        };
+        function openMaker(brandId) {
+            const brand = brandById(brandId), c = CONTACTS[brandId];
+            const mk = MAKERS[brandId] || {};
+            const row = (ic, label, html) => `<div class="mk-row"><span class="mk-ic">${MK_ICON[ic]}</span><div><small>${esc(t(label))}</small>${html}</div></div>`;
+            let body;
+            if (!c) body = `<p class="note">${esc(t('mk_none'))}</p>`;
+            else body = row('tel', 'mk_tel', c.tel ? c.tel.map(x => `<a href="tel:${esc(x.replace(/[^+\d]/g, ''))}">${esc(x)}</a>`).join('<br>') : `<span style="color:var(--ink-3)">—</span>`)
+                + row('mail', 'mk_mail', c.mail ? c.mail.map(x => `<a href="mailto:${esc(x)}">${esc(x)}</a>`).join('<br>') : `<span style="color:var(--ink-3)">${esc(t('mk_no_email'))}</span>`)
+                + row('addr', 'mk_addr', c.addr.map(esc).join('<br>'))
+                + row('web', 'mk_web', `<a href="${esc(c.web)}" target="_blank" rel="noopener">${esc(c.webLabel || c.web)}</a>`)
+                + `<p class="note" style="margin-top:12px">${esc(t('mk_src'))}: <a href="${esc(c.src)}" target="_blank" rel="noopener">${esc(c.src.replace(/^https?:\/\//, ''))}</a></p>`;
+            $('#maker-body').innerHTML = `<h3 style="margin:0 0 12px">${esc(c ? c.name : (L(brand.manufacturer) || mk.n || brand.name))}</h3>${body}<p class="note" style="margin-top:12px">${esc(t('mk_note'))}</p>`;
+            openDialog('dlg-maker');
+        }
+        // Esquema de perfil con las dimensiones de la talla (a escala de las cotas publicadas)
+        function dimSVG(r) {
+            const num = k => (r[k] !== undefined && r[k] !== '' && !isNaN(parseFloat(r[k]))) ? parseFloat(r[k]) : null;
+            const id = num('id'), tad = num('tad'), cod = num('cod'), oho = num('oho');
+            if (!id) return '';
+            const outer = cod || (tad ? tad * 1.05 : id * 1.25);
+            const s = 190 / outer, W = 320, cx = W / 2;
+            const H = Math.min(120, Math.max(46, (oho || id * 0.55) * s)), y0 = 44;
+            const idw = id * s, tw = (tad || id * 1.15) * s, ow = outer * s;
+            const ringH = Math.max(24, H * 0.38), ringY = y0 + H * 0.5 - ringH * 0.35;
+            const yc = y0 + H + 22, yt = y0 + H + 44, hh = yt + 22;
+            const L_ = (x1, y1, x2, y2, cls) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${cls || 'dl'}"/>`;
+            const harrow = (xa, xb, y, label, val) => `${L_(xa, y, xb, y, 'dl arr')}<path d="M${xa + 6} ${y - 3.5}L${xa} ${y}l6 3.5M${xb - 6} ${y - 3.5}L${xb} ${y}l-6 3.5" class="dl"/><text x="${cx}" y="${y - 6}" text-anchor="middle" class="dt">${esc(label)} <tspan class="dv">${esc(val)}</tspan></text>`;
+            const f = v => (Math.round(v * 10) / 10).toFixed(1);
+            let svg = `<svg viewBox="0 0 ${W} ${hh}" role="img" aria-label="${esc(t('dim_h'))}" class="dim-svg">`;
+            // cuerpo: paredes del anillo rigido, discos (abiertos) y anillo de sutura
+            const lobe = Math.max(ringH, ow / 2 - idw / 2 + 4);
+            svg += `<rect x="${cx - ow / 2}" y="${ringY}" width="${lobe}" height="${ringH}" rx="${ringH / 2}" class="d-ring"/><rect x="${cx + ow / 2 - lobe}" y="${ringY}" width="${lobe}" height="${ringH}" rx="${ringH / 2}" class="d-ring"/>`;
+            svg += `<rect x="${cx - idw / 2 - 7}" y="${y0}" width="7" height="${H}" rx="3" class="d-wall"/><rect x="${cx + idw / 2}" y="${y0}" width="7" height="${H}" rx="3" class="d-wall"/>`;
+            svg += `<rect x="${cx - idw * 0.17 - 3}" y="${y0 + H * 0.08}" width="6" height="${H * 0.84}" rx="3" class="d-leaf"/><rect x="${cx + idw * 0.17 - 3}" y="${y0 + H * 0.08}" width="6" height="${H * 0.84}" rx="3" class="d-leaf"/>`;
+            // cotas
+            svg += L_(cx - idw / 2, y0 - 2, cx - idw / 2, y0 - 22, 'dl ext') + L_(cx + idw / 2, y0 - 2, cx + idw / 2, y0 - 22, 'dl ext') + harrow(cx - idw / 2, cx + idw / 2, y0 - 16, t('h_id').replace(/ \(.*\)/, ''), f(id));
+            if (cod) svg += L_(cx - ow / 2, ringY + ringH, cx - ow / 2, yc + 4, 'dl ext') + L_(cx + ow / 2, ringY + ringH, cx + ow / 2, yc + 4, 'dl ext') + harrow(cx - ow / 2, cx + ow / 2, yc, t('h_cod').replace(/ \(.*\)/, ''), f(cod));
+            if (tad) svg += L_(cx - tw / 2, ringY + ringH, cx - tw / 2, yt + 4, 'dl ext') + L_(cx + tw / 2, ringY + ringH, cx + tw / 2, yt + 4, 'dl ext') + harrow(cx - tw / 2, cx + tw / 2, yt, t('h_tad').replace(/ \(.*\)/, ''), f(tad));
+            if (oho) { const xr = cx + ow / 2 + 14; svg += L_(cx + idw / 2 + 7, y0, xr + 4, y0, 'dl ext') + L_(cx + idw / 2 + 7, y0 + H, xr + 4, y0 + H, 'dl ext') + L_(xr, y0, xr, y0 + H, 'dl arr') + `<path d="M${xr - 3.5} ${y0 + 6}L${xr} ${y0}l3.5 6M${xr - 3.5} ${y0 + H - 6}L${xr} ${y0 + H}l3.5 -6" class="dl"/><text transform="translate(${xr + 14} ${y0 + H / 2}) rotate(90)" text-anchor="middle" class="dt">${esc(t('h_oho').replace(/ \(.*\)/, ''))} <tspan class="dv">${esc(f(oho))}</tspan></text>`; }
+            svg += '</svg>';
+            return `<div class="dim-box"><h4>${esc(t('dim_h'))}</h4>${svg}<p class="note" style="margin:6px 0 0">${esc(t('dim_note'))}</p></div>`;
+        }
+        function reportLink(brand, st, r) {
+            const body = `${t('rep_body')}\n\n\n---\n${L(brand.manufacturer) || brand.name} — ${L(st.subtypeName)} — ${r ? t('size_sheet', r.size) : ''}\n${location.href}\nDATA ${DATA_VERSION}`;
+            const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(t('rep_sub') + ': ' + (L(st.subtypeName) || brand.name) + (r ? ' ' + r.size + ' mm' : ''))}&body=${encodeURIComponent(body)}`;
+            return `<div class="rep"><span>${esc(t('rep_hint'))}</span><a class="btn ghost" href="${href}">⚑ ${esc(t('rep_btn'))}</a></div>`;
+        }
+
+        function sizeSection(st, size, brand) {
             const pills = st.specs.map(r => `<button type="button" data-size="${esc(r.size)}" aria-pressed="${String(r.size) === size}">${esc(r.size)}<small>mm</small></button>`).join('');
             let card = '';
             if (size) {
@@ -2996,11 +3098,13 @@
                 card = `<div class="size-card" id="size-card">
                     <div class="sc-h"><h3>${esc(t('size_sheet', size))}</h3>${r.model ? `<span>${esc(r.model)}</span>` : ''}</div>
                     <div class="metrics">${metric('id', 'mm')}${metric('tad', 'mm')}${metric(areaKey, 'cm²')}</div>
+                    ${dimSVG(r)}
                     ${rowsT.length ? rowsT.map(row => `${rowsT.length > 1 ? `<p class="note"><b>${esc(t('tavi_size'))} ${esc(row.size)}</b></p>` : ''}<div class="devices">${TAVI_KEYS.slice(1).map(k => {
                         const v = String(row[k] ?? '—'); const c = /caution/i.test(v);
                         const shown = c ? ('⚠ ' + (v.replace(/\(?\s*caution\s*\)?/i, '').trim() || t('caution'))) : v;
                         return `<div class="dev ${c ? 'caution' : ''}"><small>${esc(t('tavi_' + k))}</small><b>${esc(shown)}</b></div>`;
                     }).join('')}</div>`).join('') : (st.taviTable ? `<p class="note">${esc(t('vivor_no_tavi'))}</p>` : '')}
+                    ${reportLink(brand, st, r)}
                 </div>`;
             } else card = `<p class="note">${esc(t('pick_size_hint'))}</p>`;
             return panel('sec-size', 'size', t('pick_size'), `<div class="sizes" role="group">${pills}</div>${card}`);
@@ -3085,7 +3189,7 @@
             const pcs = provCount([{ ...st, taviTable: [] }]);
             const specTag = pcs.pct === 100 ? `<span class="tag off">${esc(t('specs_tag_off'))}</span>` : pcs.lit === pcs.tot && pcs.tot ? `<span class="tag lit">${esc(t('lit_tag'))}</span>` : pcs.own === pcs.tot && pcs.tot ? `<span class="tag own">${esc(t('tavi_own_tag'))}</span>` : `<span class="tag own">${esc(t('specs_tag_mix'))}</span>`;
             const main = [
-                hasSpecs ? sizeSection(st, size) : '',
+                hasSpecs ? sizeSection(st, size, brand) : '',
                 st.taviTable && st.taviTable.length ? panel('sec-tavi', 'tavi', t('tavi'), taviTable(st, size), `<span class="tag own">${esc(t('tavi_own_tag'))}</span>`) : '',
                 hasSpecs ? panel('sec-specs', 'specs', t('specs'), specsTable(st, size), specTag)
                          : panel('sec-specs', 'specs', t('specs'), `<div class="empty" style="padding:22px">${esc(t('specs_pending'))}</div>${st.notes ? `<p class="note p-${st.prov || 'own'}" style="font-weight:500">${esc(L(st.notes))}</p>` : ''}`, st.prov === 'lit' ? `<span class="tag lit">${esc(t('lit_tag'))}</span>` : ''),
@@ -3220,6 +3324,7 @@
                 </div>`;
             bindMedia(view);
             $$('[data-open]', view).forEach(b => b.addEventListener('click', () => openDialog(b.dataset.open)));
+            $$('[data-maker]', view).forEach(b => b.addEventListener('click', () => openMaker(b.dataset.maker)));
             $$('[data-jump]', view).forEach(a2 => a2.addEventListener('click', e => { e.preventDefault(); document.getElementById(a2.dataset.jump)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
             window.scrollTo(0, 0);
         }
@@ -3422,7 +3527,7 @@
             if (!st || !size) { out.innerHTML = ''; return; }
             const b = brandById($('#c-brand').value);
             // Reutiliza la ficha de talla de la vista de detalle
-            const tmp = document.createElement('div'); tmp.innerHTML = sizeSection(st, size);
+            const tmp = document.createElement('div'); tmp.innerHTML = sizeSection(st, size, b);
             const card = tmp.querySelector('#size-card'); card.removeAttribute('id');
             card.querySelector('.sc-h h3').textContent = `${b.name} — ${L(st.subtypeName)} · ${size} mm`;
             out.innerHTML = card.outerHTML + `<div class="prov-legend" style="margin-top:10px"><span class="swatch off"><i></i>${esc(t('prov_off'))}</span><span class="swatch lit"><i></i>${esc(t('prov_lit'))}</span><span class="swatch own"><i></i>${esc(t('prov_own'))}</span></div>
