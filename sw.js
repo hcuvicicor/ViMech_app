@@ -1,6 +1,6 @@
 // ViMech service worker: la app funciona sin conexión una vez visitada.
 // Sube el número de versión cada vez que publiques cambios en index.html.
-const VERSION = 'vimech-2026-10-07i';
+const VERSION = 'vimech-2026-10-07j';
 const CORE = ['./', './index.html', './politica_privacidad.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

@@ -1,8 +1,8 @@
 # ViMech
 
-Guía de consulta gratuita sobre la identificación fluoroscópica, el diseño y las dimensiones de las válvulas mecánicas bidisco en posición aórtica, y sobre el tamaño de TAVI en procedimientos *valve-in-mechanical*.
+Guía gratuita de identificación fluoroscópica y diseño de válvulas mecánicas para procedimientos *valve-in-valve*, con dimensiones y tamaño de TAVI en posición aórtica.
 
-Free quick-reference app on fluoroscopic identification, design and dimensions of bileaflet mechanical aortic valves, and TAVI sizing for valve-in-mechanical procedures.
+Free guide to fluoroscopic identification and design of mechanical valves for valve-in-valve procedures, with dimensions and aortic TAVI sizing.
 
 **Aplicación / App:** https://hcuvicicor.github.io/ViMech_app/
 

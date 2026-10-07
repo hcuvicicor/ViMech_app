@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ViMech">
     <meta name="format-detection" content="telephone=no">
-    <title>ViMech — Bileaflet Mechanical Valves at Aortic location</title>
+    <title>ViMech — Mechanical Valves: Fluoroscopic Identification and Design for Valve-in-Valve</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icon-192.png">
@@ -695,7 +695,7 @@
                 theme_auto: 'Auto', theme_light: 'Light', theme_dark: 'Dark',
                 menu_sources: 'Data sources', menu_about: 'About', menu_disclaimer: 'Disclaimer & copyright', menu_contact: 'Contact', menu_privacy: 'Privacy policy',
                 about_title: 'About ViMech',
-                about_content: '<p><strong>ViMech</strong> is a quick-reference guide to the fluoroscopic identification and design of mechanical heart valves, intended as a reference for valve-in-mechanical (TAVI in mechanical prosthesis) procedures.</p><p>Each model shows the document its dimensions come from. Models marked <em>unverified</em> use the hospital's own data because no official source has been located yet.</p><p><strong>Copyright notice:</strong> all product names, trademarks, logos and images belong to their respective owners (Abbott, Medtronic, Corcym, Artivion, Meril, etc.). They are used for educational, identification and clinical reference purposes.</p>',
+                about_content: '<p><strong>ViMech</strong> is a quick-reference guide to the fluoroscopic identification and design of mechanical heart valves, intended as a reference for valve-in-mechanical (TAVI in mechanical prosthesis) procedures.</p><p>Each model shows the document its dimensions come from. Models marked <em>unverified</em> use the hospital\'s own data because no official source has been located yet.</p><p><strong>Copyright notice:</strong> all product names, trademarks, logos and images belong to their respective owners (Abbott, Medtronic, Corcym, Artivion, Meril, etc.). They are used for educational, identification and clinical reference purposes.</p>',
                 disclaimer_title: 'Disclaimer',
                 disclaimer_content: '<p><strong>Intended purpose:</strong> ViMech is an educational reference that gathers published dimensions of mechanical heart valves and fluoroscopic identification features. It does not process patient data, does not make diagnostic or therapeutic decisions and is not a medical device.</p><p>This tool is for informational and educational purposes only. It does not replace the manufacturer\'s instructions for use, imaging-based assessment or clinical judgement. Always verify dimensions against the official documentation before any procedure.</p><p>TAVI sizing suggestions are indicative and must be confirmed by the heart team. The creators accept no liability for errors or omissions.</p><p><strong>Non-affiliation:</strong> this is an independent application, not affiliated with, endorsed or sponsored by any of the manufacturers mentioned.</p>',
                 contact_title: 'Contact',
@@ -705,7 +705,7 @@
                 footer_disclaimer: 'Reference tool. Verify all values against the manufacturer\'s IFU. Not a substitute for clinical judgement.',
                 back: 'Back', images: 'Images & design', specs: 'Technical specifications', tavi: 'TAVI size selection',
                 fluoro: 'Fluoroscopic identification', positioning: 'Positioning & deployment',
-                source_ok: 'Official source:', source_none: 'No official source located — values come from the hospital's own data and have not been checked against a manufacturer document.',
+                source_ok: 'Official source:', source_none: 'No official source located — values come from the hospital\'s own data and have not been checked against a manufacturer document.',
                 tavi_source: 'Source:', caution: 'Caution', caution_legend: 'use with care / borderline sizing',
                 orphan_rows: 'Rows in grey: size not listed in the manufacturer\'s specifications.',
                 missing_tavi: 'No TAVI data for size(s):',
@@ -804,7 +804,7 @@
             cr_cc0: 'Public-domain dedication (CC0 1.0)', cr_images_n: n => `${n} ${n === 1 ? 'image' : 'images'}`,
             cr_other_h: 'Other figures', cr_other_p: 'Fluoroscopic images, comparison figures and schematics not listed above are reproduced for educational identification. Rights remain with their respective owners or authors.',
             cr_take_h: 'Rights holders', cr_take_p: 'If you own rights to any material shown here and want it credited differently or removed, write to the contact address in the app and it will be handled promptly.',
-            mk_btn: 'Manufacturer contact', mk_title: 'Manufacturer contact', mk_tel: 'Phone', mk_mail: 'Email', mk_addr: 'Address', mk_web: 'Website', mk_no_email: 'No email listed', mk_form: 'Contact form',
+            no_tavi_model: 'No TAVI sizing table for this model.', mk_btn: 'Manufacturer contact', mk_title: 'Manufacturer contact', mk_tel: 'Phone', mk_mail: 'Email', mk_addr: 'Address', mk_web: 'Website', mk_no_email: 'No email listed', mk_form: 'Contact form',
             mk_note: 'Details taken from each company\'s public website on 7 October 2026 and subject to change. ViMech is independent and is not affiliated with any manufacturer.',
             mk_none: 'No active manufacturer contact could be verified for this valve, so none is shown rather than risk a wrong one. If you know the current manufacturer, please tell us.',
             mk_src: 'Source',
@@ -813,7 +813,7 @@
             rep_btn: 'Report an error', rep_hint: 'Does a value differ from the manufacturer\'s IFU?', rep_sub: 'ViMech — error report', rep_body: 'Describe the error and, if possible, attach the manufacturer document and page:',
             source_own_title: 'Own data of the hospital research unit (ICICOR).',
             prov_lit: 'Unofficial data (literature, distributors)', lit_tag: 'Unofficial',
-            hero_title: 'Bileaflet Mechanical Valves at Aortic location',
+            hero_title: 'Mechanical Valves: Fluoroscopic Identification and Design for Valve-in-Valve',
             tab_fluoro: 'Fluoro', atlas_title: 'Fluoroscopy', atlas_link: 'All fluoroscopy',
             atlas_lead: 'Cinefluoroscopic appearance of each bileaflet valve. Empty slots are reserved for the images still to be added.',
             atlas_compare: 'Side-by-side comparison', open_sheet: 'Open sheet',
@@ -850,7 +850,7 @@
             cr_cc0: 'Dedicación al dominio público (CC0 1.0)', cr_images_n: n => `${n} ${n === 1 ? 'imagen' : 'imágenes'}`,
             cr_other_h: 'Otras figuras', cr_other_p: 'Las imágenes de fluoroscopia, las figuras comparativas y los esquemas no incluidos arriba se reproducen con fines de identificación educativa. Los derechos siguen perteneciendo a sus respectivos titulares o autores.',
             cr_take_h: 'Titulares de derechos', cr_take_p: 'Si es titular de derechos de algún material mostrado aquí y desea que se cite de otro modo o que se retire, escriba a la dirección de contacto de la app y se atenderá con prontitud.',
-            mk_btn: 'Contacto del fabricante', mk_title: 'Contacto del fabricante', mk_tel: 'Teléfono', mk_mail: 'Correo', mk_addr: 'Dirección', mk_web: 'Web', mk_no_email: 'Sin correo publicado', mk_form: 'Formulario de contacto',
+            no_tavi_model: 'Sin tabla de tamaño TAVI para este modelo.', mk_btn: 'Contacto del fabricante', mk_title: 'Contacto del fabricante', mk_tel: 'Teléfono', mk_mail: 'Correo', mk_addr: 'Dirección', mk_web: 'Web', mk_no_email: 'Sin correo publicado', mk_form: 'Formulario de contacto',
             mk_note: 'Datos tomados de la web pública de cada empresa el 7 de octubre de 2026; pueden cambiar. ViMech es independiente y no está afiliada a ningún fabricante.',
             mk_none: 'No se ha podido verificar un contacto activo del fabricante de esta válvula, por lo que no se muestra ninguno para no dar uno erróneo. Si conoce el fabricante actual, indíquelo.',
             mk_src: 'Fuente',
@@ -859,7 +859,7 @@
             rep_btn: 'Notificar un error', rep_hint: '¿Algún valor difiere de las IFU del fabricante?', rep_sub: 'ViMech — notificación de error', rep_body: 'Describa el error y, si es posible, adjunte el documento del fabricante y la página:',
             source_own_title: 'Datos propios de la unidad de investigación del hospital (ICICOR).',
             prov_lit: 'Datos no oficiales (literatura, distribuidores)', lit_tag: 'No oficial',
-            hero_title: 'Bileaflet Mechanical Valves at Aortic location',
+            hero_title: 'Válvulas mecánicas: identificación fluoroscópica y diseño para valve-in-valve',
             tab_fluoro: 'Fluoro', atlas_title: 'Fluoroscopia', atlas_link: 'Toda la fluoroscopia',
             atlas_lead: 'Aspecto cinefluoroscópico de cada válvula bidisco. Los huecos vacíos quedan reservados para las imágenes que faltan por añadir.',
             atlas_compare: 'Comparativa', open_sheet: 'Abrir ficha',
@@ -1083,7 +1083,7 @@
         const MERIL_IMG = [...IMG.meril, 'assets/Meril Miltonia/meril-miltonia-aortic-sizes-photo.png'];
         const K_MER = ['size', 'model', 'tad', 'cod', 'id', 'goa', 'oho', 'ih'];
         const K_ATS_H = ['size', 'model', 'tad', 'id', 'goa', 'ohp', 'iph', 'oph'];
-        const UNVERIFIED_HEIGHTS = { en: 'Inflow/outflow profile heights: values from the hospital's own data; no official source located.', es: 'Alturas de perfil de entrada/salida: valores de datos propios del hospital; sin fuente oficial localizada.' };
+        const UNVERIFIED_HEIGHTS = { en: 'Inflow/outflow profile heights: values from the hospital\'s own data; no official source located.', es: 'Alturas de perfil de entrada/salida: valores de datos propios del hospital; sin fuente oficial localizada.' };
 
         const valvesData = [
             {
@@ -3103,7 +3103,7 @@
                         const v = String(row[k] ?? '—'); const c = /caution/i.test(v);
                         const shown = c ? ('⚠ ' + (v.replace(/\(?\s*caution\s*\)?/i, '').trim() || t('caution'))) : v;
                         return `<div class="dev ${c ? 'caution' : ''}"><small>${esc(t('tavi_' + k))}</small><b>${esc(shown)}</b></div>`;
-                    }).join('')}</div>`).join('') : (st.taviTable ? `<p class="note">${esc(t('vivor_no_tavi'))}</p>` : '')}
+                    }).join('')}</div>`).join('') : (st.taviTable ? `<p class="note">${esc(t('vivor_no_tavi'))}</p>` : `<p class="note">${esc(t('no_tavi_model'))}</p>`)}
                     ${reportLink(brand, st, r)}
                 </div>`;
             } else card = `<p class="note">${esc(t('pick_size_hint'))}</p>`;
@@ -3442,8 +3442,8 @@
             const order = Object.keys(CREDIT_ORGS).filter(k => groups.has(k));
             const url = location.protocol.startsWith('http') ? location.origin + location.pathname : 'https://hcuvicicor.github.io/ViMech_app/';
             const year = new Date().getFullYear();
-            const cite = L({ en: `ICICOR — Instituto de Ciencias del Corazón, Hospital Clínico Universitario de Valladolid. ViMech: bileaflet mechanical valves at aortic location — fluoroscopic identification, design, dimensions and TAVI sizing for valve-in-mechanical procedures [web application]. Data version ${DATA_VERSION}. ${url} (accessed ${new Date().toISOString().slice(0, 10)}).`,
-                es: `ICICOR — Instituto de Ciencias del Corazón, Hospital Clínico Universitario de Valladolid. ViMech: válvulas mecánicas bidisco en posición aórtica — identificación fluoroscópica, diseño, dimensiones y tamaño de TAVI para procedimientos valve-in-mechanical [aplicación web]. Versión de datos ${DATA_VERSION}. ${url} (consultado el ${new Date().toISOString().slice(0, 10)}).` });
+            const cite = L({ en: `ICICOR — Instituto de Ciencias del Corazón, Hospital Clínico Universitario de Valladolid. ViMech: mechanical valves — fluoroscopic identification and design for valve-in-valve procedures (dimensions and aortic TAVI sizing) [web application]. Data version ${DATA_VERSION}. ${url} (accessed ${new Date().toISOString().slice(0, 10)}).`,
+                es: `ICICOR — Instituto de Ciencias del Corazón, Hospital Clínico Universitario de Valladolid. ViMech: válvulas mecánicas — identificación fluoroscópica y diseño para procedimientos valve-in-valve (dimensiones y tamaño de TAVI aórtico) [aplicación web]. Versión de datos ${DATA_VERSION}. ${url} (consultado el ${new Date().toISOString().slice(0, 10)}).` });
             const sec = (h, body) => `<h3 style="margin:18px 0 6px">${esc(t(h))}</h3>${body}`;
             const orgHTML = order.map(k => {
                 const o = CREDIT_ORGS[k], items = groups.get(k);
