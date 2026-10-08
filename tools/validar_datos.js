@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
-const js = html.split('<script>')[1].split('</script>')[0];
+const js = html.split('<script>').map(x => x.split('</script>')[0]).find(x => x.includes('const SRC ='));
 // Ejecuta sólo la parte de datos (sin DOM)
 const start = js.indexOf('const SRC =');
 const end = js.indexOf('// =====================================================================\n        //  ESTADO Y UTILIDADES');
