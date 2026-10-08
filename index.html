@@ -3521,7 +3521,7 @@
                         <div class="panel-h"><span class="step-n">${i + 1}</span><h2>${esc(L(s.t))}</h2></div>
                         <div class="step-grid${s.fig ? '' : ' nofig'}">
                             <div class="step-text">${L(s.p).map(p => `<p>${esc(p)}</p>`).join('')}
-                                ${s.link ? `<a class="btn ghost" href="${s.link}">${esc(t('atlas_link'))}</a>` : ''}
+                                ${s.link ? `<a class="btn ghost" href="${s.link}">${esc(t('atlas_link'))}</a>` : ''}${s.link === '#/fluoro' ? `<a class="btn ghost" href="#/id">◎ ${esc(t('id_btn'))}</a>` : ''}
                                 ${s.calc ? `<button class="btn ghost" type="button" data-open="dlg-calc">${esc(t('calc_short'))}</button>` : ''}
                             </div>
                             ${s.fig ? `<figure class="step-fig"><button type="button" class="media" data-g="${gi++}" aria-label="${esc(t('open_image'))}"><img src="${esc(asset(s.fig))}" alt="${esc(L(s.cap))}" loading="lazy"><span class="zoom">${ICON.zoom}</span></button>
