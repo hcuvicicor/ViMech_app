@@ -195,6 +195,16 @@
         .hero-art { justify-self: start; width: min(150px, 40vw); aspect-ratio: 1; order: -1; margin: -6px 0 -4px -10px; }
         @media (min-width: 760px) { .hero-art { order: 0; justify-self: center; margin: 0; width: min(320px, 100%); } }
 
+        .hero.hero-c { padding: 12px 0 12px; }
+        @media (min-width: 760px) { .hero.hero-c { padding: 18px 0 18px; } }
+        .hc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .hero.hero-c h1 { font-size: clamp(14.5px, 3.8vw, 20px); line-height: 1.25; max-width: none; letter-spacing: -.015em; font-weight: 650; }
+        .hc-btns { display: flex; gap: 6px; flex: none; }
+        .hc-btn { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: var(--xray-dim); }
+        .hc-btn[aria-expanded="true"] { background: rgba(255,255,255,.18); color: #fff; border-color: rgba(255,255,255,.35); }
+        .hero.hero-c p.lead { font-size: var(--fs-md); margin: 10px 0 2px; }
+        .hero.hero-c .search { margin-top: 10px; }
+        .workflow.hc-panel { margin-top: 4px; }
         .search { position: relative; max-width: 560px; }
         .search input {
             width: 100%; height: 54px; border-radius: 16px; border: 1px solid var(--film-line);
@@ -2921,27 +2931,27 @@
             const view = $('#view');
             const y = keepScroll ? window.scrollY : 0;
             const total = valvesData.reduce((a, b) => a + allSubs(b).length, 0);
+            const H = state.home || (state.home = { info: false, how: false, search: !!state.query });
             view.innerHTML = `
-                <section class="film hero">
-                    <div class="wrap hero-grid">
-                        <div>
+                <section class="film hero hero-c">
+                    <div class="wrap">
+                        <div class="hc-row">
                             <h1>${esc(t('hero_title'))}</h1>
-                            <p class="lead">${esc(t('hero_lead'))}</p>
-                            <label class="search"><span class="sr-only">${esc(t('search_placeholder'))}</span>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-                                <input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="${esc(t('search_placeholder'))}" value="${esc(state.query)}">
-                            </label>
-                            <div class="prov-legend" style="margin-top:18px" aria-label="${esc(t('prov_title'))}">
-                                <span class="swatch off"><i></i>${esc(t('prov_off'))}</span>
-                                <span class="swatch lit"><i></i>${esc(t('prov_lit'))}</span>
-                                <span class="swatch own"><i></i>${esc(t('prov_own'))}</span>
+                            <div class="hc-btns">
+                                <button type="button" class="hc-btn" data-hc="info" aria-expanded="${H.info}" aria-label="${esc(t('hc_info'))}" title="${esc(t('hc_info'))}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
+                                <button type="button" class="hc-btn" data-hc="how" aria-expanded="${H.how}" aria-label="${esc(t('wf_title'))}" title="${esc(t('wf_title'))}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h3M4 12h3M4 18h3M10 6h10M10 12h10M10 18h10"/></svg></button>
+                                <button type="button" class="hc-btn" data-hc="search" aria-expanded="${H.search}" aria-label="${esc(t('search_placeholder'))}" title="${esc(t('search_placeholder'))}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
                             </div>
                         </div>
-                        <div class="hero-art">${XVALVE}</div>
+                        <p class="lead hc-panel" id="hc-info" ${H.info ? '' : 'hidden'}>${esc(t('hero_lead'))}</p>
+                        <label class="search hc-panel" id="hc-search" ${H.search ? '' : 'hidden'}><span class="sr-only">${esc(t('search_placeholder'))}</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                            <input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="${esc(t('search_placeholder'))}" value="${esc(state.query)}">
+                        </label>
                     </div>
                 </section>
                 <div class="wrap home-body">
-                    <section class="workflow" aria-label="${esc(t('wf_title'))}">
+                    <section class="workflow hc-panel" id="hc-how" aria-label="${esc(t('wf_title'))}" ${H.how ? '' : 'hidden'}>
                         <div class="wf-head"><h2>${esc(t('wf_title'))}</h2><a href="#/guia">${esc(t('guide_open'))}</a></div>
                         <ol>${t('wf_steps').map((s, i) => `<li><a href="${['#brand-list', '#/fluoro', '#brand-list', '#calc', '#/guia'][i]}" data-wf="${i}"><b>${i + 1}</b><span>${esc(s)}</span></a></li>`).join('')}</ol>
                     </section>
@@ -2955,6 +2965,11 @@
                     <div id="brand-list" class="brand-grid"></div>
                 </div>`;
             $('#q').addEventListener('input', e => { state.query = e.target.value; renderBrandList(); });
+            $$('[data-hc]').forEach(btn => btn.addEventListener('click', () => {
+                const k = btn.dataset.hc; H[k] = !H[k]; btn.setAttribute('aria-expanded', String(H[k]));
+                const el = $('#hc-' + k); el.hidden = !H[k];
+                if (k === 'search') { if (H[k]) $('#q').focus(); else if (state.query) { state.query = ''; $('#q').value = ''; renderBrandList(); } }
+            }));
             $$('[data-wf]').forEach(el => el.addEventListener('click', e => {
                 const h = el.getAttribute('href');
                 if (h === '#brand-list') { e.preventDefault(); $('#brand-list').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
@@ -3749,6 +3764,8 @@
             sim_src: 'Fuentes de las dimensiones de los dispositivos', sim_flow: 'salida', sim_in: 'entrada', sim_transp: 'Anillo transparente', sim_nominal: 'nominal', sim_play: 'Repetir implante', sim_lg_mech: 'Prótesis mecánica (ya implantada)', sim_lg_thv: 'TAVI (valve-in-valve)', sim_cmp: 'Comparativa de candidatos de la tabla de tamaños', sim_cmp_dev: 'Dispositivo', sim_cmp_note: 'Toca una fila para simularla.', sim_trans: 'El estrechamiento en los bordes del anillo se dibuja como una transición progresiva de longitud esquemática.',
             sim_layers: 'Capas (toca: visible → atenuada → oculta)', ly_mech: 'Cuerpo mecánico', ly_cuff: 'Anillo de sutura', ly_frame: 'Armazón TAVI', ly_leaf: 'Valvas TAVI', ly_skirt: 'Faldón TAVI', ly_dims: 'Cotas', ly_labels: 'Números', ly_on: 'visible', ly_dim: 'atenuada', ly_off: 'oculta', ly_reset: 'Mostrar todo'
         });
+
+        Object.assign(translations.en, { hc_info: 'About ViMech' }); Object.assign(translations.es, { hc_info: 'Acerca de ViMech' });
 
         const simNum = (r, k) => (r && r[k] !== undefined && r[k] !== '' && !isNaN(parseFloat(r[k]))) ? parseFloat(r[k]) : null;
         // Candidatos de la tabla TAVI para la talla mecánica
